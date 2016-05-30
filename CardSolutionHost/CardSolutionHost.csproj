@@ -78,25 +78,225 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WeifenLuo.WinFormsUI.Docking">
+      <HintPath>..\packages\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="APIForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="APIForm.designer.cs">
+      <DependentUpon>APIForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="BLL\ConfigService.cs" />
     <Compile Include="BLL\ServiceBase.cs" />
+    <Compile Include="Control\AppContainer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\AppContainer.Designer.cs">
+      <DependentUpon>AppContainer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Control\CSharpWin\ControlState.cs" />
+    <Compile Include="Control\CSharpWin\FileTansfersContainer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\CSharpWin\FileTransfersItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\CSharpWin\FileTransfersItemStyle.cs" />
+    <Compile Include="Control\CSharpWin\FileTransfersItemText.cs" />
+    <Compile Include="Control\CSharpWin\GraphicsPathHelper.cs" />
+    <Compile Include="Control\CSharpWin\IFileTransfersItemText.cs" />
+    <Compile Include="Control\CSharpWin\RoundStyle.cs" />
+    <Compile Include="Control\MyDataGridView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\TraFransfersFileControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\TraFransfersFileControl.designer.cs">
+      <DependentUpon>TraFransfersFileControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Core\ClassValueCopier.cs" />
     <Compile Include="Core\DataBaseExtend.cs" />
     <Compile Include="Core\SQLiteDatabase.cs" />
+    <Compile Include="Core\SystemConfig.cs" />
+    <Compile Include="DataBaseSet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataBaseSet.designer.cs">
+      <DependentUpon>DataBaseSet.cs</DependentUpon>
+    </Compile>
     <Compile Include="Entitys\BaseEntity.cs" />
     <Compile Include="Entitys\ConfigEntity.cs" />
+    <Compile Include="Entitys\MachinesEntity.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
+    <Compile Include="MainForm.designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MenJinSet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MenJinSet.designer.cs">
+      <DependentUpon>MenJinSet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MenJin\ACGroupEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MenJin\ACGroupEdit.designer.cs">
+      <DependentUpon>ACGroupEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MenJin\ACGroupManage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MenJin\ACGroupManage.designer.cs">
+      <DependentUpon>ACGroupManage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MenJin\ACGroupSelect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MenJin\ACGroupSelect.designer.cs">
+      <DependentUpon>ACGroupSelect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MenJin\acholidayEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MenJin\acholidayEdit.designer.cs">
+      <DependentUpon>acholidayEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MenJin\acholidayManage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MenJin\acholidayManage.designer.cs">
+      <DependentUpon>acholidayManage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MenJin\ACTimeZonesEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MenJin\ACTimeZonesEdit.designer.cs">
+      <DependentUpon>ACTimeZonesEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MenJin\ACTimeZonesManage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MenJin\ACTimeZonesManage.designer.cs">
+      <DependentUpon>ACTimeZonesManage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MenJin\ACUnlockCombEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MenJin\ACUnlockCombEdit.designer.cs">
+      <DependentUpon>ACUnlockCombEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MenJin\ACUnlockCombManage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MenJin\ACUnlockCombManage.designer.cs">
+      <DependentUpon>ACUnlockCombManage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MenJin\AttenPosition.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MenJin\AttenPosition.Designer.cs">
+      <DependentUpon>AttenPosition.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MenJin\MachineManage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MenJin\MachineManage.Designer.cs">
+      <DependentUpon>MachineManage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MenJin\MenJinLog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MenJin\MenJinLog.designer.cs">
+      <DependentUpon>MenJinLog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MenJin\UserACPrivilegeEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MenJin\UserACPrivilegeEdit.designer.cs">
+      <DependentUpon>UserACPrivilegeEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MenJin\UserACPrivilegeSet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MenJin\UserACPrivilegeSet.designer.cs">
+      <DependentUpon>UserACPrivilegeSet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NavigationWorkForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NavigationWorkForm.designer.cs">
+      <DependentUpon>NavigationWorkForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="APIForm.resx">
+      <DependentUpon>APIForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Control\AppContainer.resx">
+      <DependentUpon>AppContainer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Control\TraFransfersFileControl.resx">
+      <DependentUpon>TraFransfersFileControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataBaseSet.resx">
+      <DependentUpon>DataBaseSet.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MenJinSet.resx">
+      <DependentUpon>MenJinSet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MenJin\ACGroupEdit.resx">
+      <DependentUpon>ACGroupEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MenJin\ACGroupManage.resx">
+      <DependentUpon>ACGroupManage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MenJin\ACGroupSelect.resx">
+      <DependentUpon>ACGroupSelect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MenJin\acholidayEdit.resx">
+      <DependentUpon>acholidayEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MenJin\acholidayManage.resx">
+      <DependentUpon>acholidayManage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MenJin\ACTimeZonesEdit.resx">
+      <DependentUpon>ACTimeZonesEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MenJin\ACTimeZonesManage.resx">
+      <DependentUpon>ACTimeZonesManage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MenJin\ACUnlockCombEdit.resx">
+      <DependentUpon>ACUnlockCombEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MenJin\ACUnlockCombManage.resx">
+      <DependentUpon>ACUnlockCombManage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MenJin\AttenPosition.resx">
+      <DependentUpon>AttenPosition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MenJin\MachineManage.resx">
+      <DependentUpon>MachineManage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MenJin\MenJinLog.resx">
+      <DependentUpon>MenJinLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MenJin\UserACPrivilegeEdit.resx">
+      <DependentUpon>UserACPrivilegeEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MenJin\UserACPrivilegeSet.resx">
+      <DependentUpon>UserACPrivilegeSet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NavigationWorkForm.resx">
+      <DependentUpon>NavigationWorkForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -106,6 +306,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="App.config">
       <SubType>Designer</SubType>
@@ -120,6 +321,38 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="zkemkeeper">
+      <Guid>{FE9DED34-E159-408E-8490-B720A5E632C7}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\loading.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\关闭状态.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\监控状态.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\连接失败.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\载入中.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\book.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

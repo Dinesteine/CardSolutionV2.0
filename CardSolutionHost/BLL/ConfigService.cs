@@ -54,5 +54,7 @@ namespace CardSolutionHost.BLL
                 throw new Exception("保存对象不可为空");
             SaveEntitys(new List<ConfigEntity>() { entity });
         }
+
+
     }
 }
