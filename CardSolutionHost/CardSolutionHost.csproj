@@ -90,6 +90,7 @@
       <DependentUpon>APIForm.cs</DependentUpon>
     </Compile>
     <Compile Include="BLL\ConfigService.cs" />
+    <Compile Include="BLL\MenJinService.cs" />
     <Compile Include="BLL\ServiceBase.cs" />
     <Compile Include="Control\AppContainer.cs">
       <SubType>UserControl</SubType>
@@ -112,14 +113,9 @@
     <Compile Include="Control\MyDataGridView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Control\TraFransfersFileControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Control\TraFransfersFileControl.designer.cs">
-      <DependentUpon>TraFransfersFileControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="Core\ClassValueCopier.cs" />
     <Compile Include="Core\DataBaseExtend.cs" />
+    <Compile Include="Core\ServiceLoader.cs" />
     <Compile Include="Core\SQLiteDatabase.cs" />
     <Compile Include="Core\SystemConfig.cs" />
     <Compile Include="DataBaseSet.cs">
@@ -131,6 +127,7 @@
     <Compile Include="Entitys\BaseEntity.cs" />
     <Compile Include="Entitys\ConfigEntity.cs" />
     <Compile Include="Entitys\MachinesEntity.cs" />
+    <Compile Include="Interfaces\IMenJinForm.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -143,89 +140,11 @@
     <Compile Include="MenJinSet.designer.cs">
       <DependentUpon>MenJinSet.cs</DependentUpon>
     </Compile>
-    <Compile Include="MenJin\ACGroupEdit.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MenJin\ACGroupEdit.designer.cs">
-      <DependentUpon>ACGroupEdit.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MenJin\ACGroupManage.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MenJin\ACGroupManage.designer.cs">
-      <DependentUpon>ACGroupManage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MenJin\ACGroupSelect.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MenJin\ACGroupSelect.designer.cs">
-      <DependentUpon>ACGroupSelect.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MenJin\acholidayEdit.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MenJin\acholidayEdit.designer.cs">
-      <DependentUpon>acholidayEdit.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MenJin\acholidayManage.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MenJin\acholidayManage.designer.cs">
-      <DependentUpon>acholidayManage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MenJin\ACTimeZonesEdit.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MenJin\ACTimeZonesEdit.designer.cs">
-      <DependentUpon>ACTimeZonesEdit.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MenJin\ACTimeZonesManage.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MenJin\ACTimeZonesManage.designer.cs">
-      <DependentUpon>ACTimeZonesManage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MenJin\ACUnlockCombEdit.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MenJin\ACUnlockCombEdit.designer.cs">
-      <DependentUpon>ACUnlockCombEdit.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MenJin\ACUnlockCombManage.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MenJin\ACUnlockCombManage.designer.cs">
-      <DependentUpon>ACUnlockCombManage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MenJin\AttenPosition.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MenJin\AttenPosition.Designer.cs">
-      <DependentUpon>AttenPosition.cs</DependentUpon>
-    </Compile>
     <Compile Include="MenJin\MachineManage.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MenJin\MachineManage.Designer.cs">
       <DependentUpon>MachineManage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MenJin\MenJinLog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MenJin\MenJinLog.designer.cs">
-      <DependentUpon>MenJinLog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MenJin\UserACPrivilegeEdit.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MenJin\UserACPrivilegeEdit.designer.cs">
-      <DependentUpon>UserACPrivilegeEdit.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MenJin\UserACPrivilegeSet.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MenJin\UserACPrivilegeSet.designer.cs">
-      <DependentUpon>UserACPrivilegeSet.cs</DependentUpon>
     </Compile>
     <Compile Include="NavigationWorkForm.cs">
       <SubType>Form</SubType>
@@ -241,9 +160,6 @@
     <EmbeddedResource Include="Control\AppContainer.resx">
       <DependentUpon>AppContainer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Control\TraFransfersFileControl.resx">
-      <DependentUpon>TraFransfersFileControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="DataBaseSet.resx">
       <DependentUpon>DataBaseSet.cs</DependentUpon>
     </EmbeddedResource>
@@ -253,47 +169,8 @@
     <EmbeddedResource Include="MenJinSet.resx">
       <DependentUpon>MenJinSet.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MenJin\ACGroupEdit.resx">
-      <DependentUpon>ACGroupEdit.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MenJin\ACGroupManage.resx">
-      <DependentUpon>ACGroupManage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MenJin\ACGroupSelect.resx">
-      <DependentUpon>ACGroupSelect.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MenJin\acholidayEdit.resx">
-      <DependentUpon>acholidayEdit.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MenJin\acholidayManage.resx">
-      <DependentUpon>acholidayManage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MenJin\ACTimeZonesEdit.resx">
-      <DependentUpon>ACTimeZonesEdit.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MenJin\ACTimeZonesManage.resx">
-      <DependentUpon>ACTimeZonesManage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MenJin\ACUnlockCombEdit.resx">
-      <DependentUpon>ACUnlockCombEdit.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MenJin\ACUnlockCombManage.resx">
-      <DependentUpon>ACUnlockCombManage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MenJin\AttenPosition.resx">
-      <DependentUpon>AttenPosition.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="MenJin\MachineManage.resx">
       <DependentUpon>MachineManage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MenJin\MenJinLog.resx">
-      <DependentUpon>MenJinLog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MenJin\UserACPrivilegeEdit.resx">
-      <DependentUpon>UserACPrivilegeEdit.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MenJin\UserACPrivilegeSet.resx">
-      <DependentUpon>UserACPrivilegeSet.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="NavigationWorkForm.resx">
       <DependentUpon>NavigationWorkForm.cs</DependentUpon>
@@ -330,7 +207,7 @@
       <Lcid>0</Lcid>
       <WrapperTool>tlbimp</WrapperTool>
       <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
   <ItemGroup>

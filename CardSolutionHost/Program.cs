@@ -1,4 +1,5 @@
 ﻿using CardSolutionHost.Core;
+using CardSolutionHost.Interfaces;
 using Microsoft.Practices.EnterpriseLibrary.Logging;
 using System;
 using System.Diagnostics;
@@ -27,7 +28,8 @@ namespace CardSolutionHost
             Application.ThreadException += Application_ThreadException;
             //处理非UI线程异常   
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-            Application.Run(new MainForm());
+            var mainForm =  ServiceLoader.LoadService<IMainform>() as MainForm;
+            Application.Run(mainForm);
         }
 
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using CardSolutionHost.BLL;
+using CardSolutionHost.Core;
+using CardSolutionHost.Entitys;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -26,17 +29,11 @@ namespace CardSolutionHost.MenJin
 
         private void BindDataGridView(string strWhere)
         {
-            this.dt = machinesBLL.GetData(string.Empty).Tables[0];
-
+            this.dt = new MenJinService().GetMachinesEntityDt();
             DataView dv = dt.DefaultView;
             dv.Sort = "MachineNumber Asc";
             dt = dv.ToTable();
             this.dataGridView.DataSource = this.dt;
-        }
-
-        private void dataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
         }
 
         private void btnUp_Click(object sender, EventArgs e)
@@ -84,7 +81,23 @@ namespace CardSolutionHost.MenJin
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.OK;
+            try
+            {
+
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    dt.Rows[i]["Purpose"] = i;
+                }
+                dt.AcceptChanges();
+                var results = ClassValueCopier.GetArrayFromDataTable<MachinesEntity>(dt);
+                new MenJinService().SaveMachinesEntitys(results);
+                MessageBox.Show("保存成功");
+                this.DialogResult = DialogResult.OK;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -103,8 +116,9 @@ namespace CardSolutionHost.MenJin
                     DataRowView drv = this.dataGridView.Rows[e.RowIndex].DataBoundItem as DataRowView;
                     if (drv != null)
                     {
-                        var result = drv["Enabled"].TryBool() == null ? true : !drv["Enabled"].TryBool().Value;
-                        drv.Row["Enabled"] = result;
+                        if (drv["Enabled"] == null)
+                            drv.Row["Enabled"] = true;
+                        drv.Row["Enabled"] = !bool.Parse(drv["Enabled"].ToString());
                         drv.Row.AcceptChanges();
                     }
                 }

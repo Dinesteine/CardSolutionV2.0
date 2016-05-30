@@ -129,11 +129,11 @@ namespace CardSolutionHost.Control
         }
         #endregion
 
-        private System.Windows.Forms.PictureBox picFailure;
-        private System.Windows.Forms.PictureBox picConnecting;
-        private System.Windows.Forms.PictureBox picSuccess;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.PictureBox picInit;
+        public System.Windows.Forms.PictureBox picFailure;
+        public System.Windows.Forms.PictureBox picConnecting;
+        public System.Windows.Forms.PictureBox picSuccess;
+        public System.Windows.Forms.Label label1;
+        public System.Windows.Forms.PictureBox pictureBox1;
+        public System.Windows.Forms.PictureBox picInit;
     }
 }

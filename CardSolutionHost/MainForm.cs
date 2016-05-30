@@ -1,4 +1,5 @@
 ﻿using CardSolutionHost.Core;
+using CardSolutionHost.Interfaces;
 using Microsoft.Practices.EnterpriseLibrary.Logging;
 using System;
 using System.Windows.Forms;
@@ -6,62 +7,72 @@ using WeifenLuo.WinFormsUI.Docking;
 
 namespace CardSolutionHost
 {
-    public partial class MainForm : WeifenLuo.WinFormsUI.Docking.DockContent
+    public partial class MainForm : WeifenLuo.WinFormsUI.Docking.DockContent, IMainform
     {
         public MainForm()
         {
             InitializeComponent();
         }
-
+        bool loaded = false;
         private void MainForm_Load(object sender, EventArgs e)
         {
-            NavigationWorkForm navigationForm = null;
-            foreach (DockContent frm in this.dockPanel.Contents)
+            try
             {
-                if (frm is NavigationWorkForm)
+                if (loaded) return;
+                NavigationWorkForm navigationForm = null;
+                foreach (DockContent frm in this.dockPanel.Contents)
                 {
-                    frm.Activate();     //激活子窗体
-                    return;
+                    if (frm is NavigationWorkForm)
+                    {
+                        frm.Activate();     //激活子窗体
+                        return;
+                    }
                 }
+                navigationForm = ServiceLoader.LoadService<IMenJinControler>() as NavigationWorkForm;
+                navigationForm.ShowHint = DockState.Document;
+                navigationForm.Show(dockPanel);
+                loaded = true;
             }
-            navigationForm = new NavigationWorkForm();
-            navigationForm.ShowHint = DockState.Document;
-            navigationForm.Show(dockPanel);
+            catch (Exception)
+            {
+                MessageBox.Show("程序发生了不可预知的错误需要退出");
+                Environment.Exit(-1);
+            }
         }
         private void toolStripUpLoad_Click(object sender, EventArgs e)
         {
-            CardSolutionHost.MenJin.MenJinLog frm = new CardSolutionHost.MenJin.MenJinLog();
-            frm.ShowDialog();
+            //CardSolutionHost.MenJin.MenJinLog frm = new CardSolutionHost.MenJin.MenJinLog();
+            //frm.ShowDialog();
         }
 
         private void toolStripACTimeZones_Click(object sender, EventArgs e)
         {
-            MenJin.ACTimeZonesManage frm = new CardSolutionHost.MenJin.ACTimeZonesManage();
-            frm.ShowDialog();
+            //MenJin.ACTimeZonesManage frm = new CardSolutionHost.MenJin.ACTimeZonesManage();
+            //frm.ShowDialog();
         }
 
         private void toolStripACGroup_Click(object sender, EventArgs e)
         {
-            MenJin.ACGroupManage frm = new CardSolutionHost.MenJin.ACGroupManage();
-            frm.ShowDialog();
+            //MenJin.ACGroupManage frm = new CardSolutionHost.MenJin.ACGroupManage();
+            //frm.ShowDialog();
         }
 
         private void toolStripacholiday_Click(object sender, EventArgs e)
         {
-            MenJin.acholidayManage frm = new CardSolutionHost.MenJin.acholidayManage();
-            frm.ShowDialog();
+            //MenJin.acholidayManage frm = new CardSolutionHost.MenJin.acholidayManage();
+            //frm.ShowDialog();
         }
 
         private void toolStripACUnlockComb_Click(object sender, EventArgs e)
         {
-            MenJin.ACUnlockCombManage frm = new CardSolutionHost.MenJin.ACUnlockCombManage();
-            frm.ShowDialog();
+            //MenJin.ACUnlockCombManage frm = new CardSolutionHost.MenJin.ACUnlockCombManage();
+            //frm.ShowDialog();
         }
 
         private void toolStripUserACPrivilege_Click(object sender, EventArgs e)
         {
-            CardSolutionHost.MenJin.AttenPosition frm = new CardSolutionHost.MenJin.AttenPosition();
-            frm.ShowDialog();
+            //CardSolutionHost.MenJin.AttenPosition frm = new CardSolutionHost.MenJin.AttenPosition();
+            //frm.ShowDialog();
         }
 
         private void toolStripExit_Click(object sender, EventArgs e)
@@ -87,41 +98,25 @@ namespace CardSolutionHost
 
         public void toolStripRefreshServer_Click(object sender, EventArgs e)
         {
-            NavigationWorkForm navigationForm = null;
-            foreach (DockContent frm in this.dockPanel.Contents)
+            try
             {
-                if (frm is NavigationWorkForm)
-                {
-                    navigationForm = frm as NavigationWorkForm;
-                    try
-                    {
-                        navigationForm.RefreshMachine();
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Writer.Write(ex);
-                    }
-                }
+                //ServiceLoader.LoadService<IMenJinControler>().RefreshMachine();
+            }
+            catch (Exception ex)
+            {
+                Logger.Writer.Write(ex);
             }
         }
 
         public void toolStripStartServer_Click(object sender, EventArgs e)
         {
-            NavigationWorkForm navigationForm = null;
-            foreach (DockContent frm in this.dockPanel.Contents)
+            try
             {
-                if (frm is NavigationWorkForm)
-                {
-                    navigationForm = frm as NavigationWorkForm;
-                    try
-                    {
-                        navigationForm.ReloadMachine();
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Writer.Write(ex);
-                    }
-                }
+                //ServiceLoader.LoadService<IMenJinControler>().ReloadMachine();
+            }
+            catch (Exception ex)
+            {
+                Logger.Writer.Write(ex);
             }
         }
 
@@ -149,13 +144,7 @@ namespace CardSolutionHost
             {
                 if (dia == DialogResult.OK)
                 {
-                    NavigationWorkForm navigationForm = null;
-                    foreach (DockContent frm in this.dockPanel.Contents)
-                    {
-                        navigationForm = frm as NavigationWorkForm;
-                        navigationForm.ReloadMachine();
-                    }
-                    MessageBox.Show("保存成功");
+                    //ServiceLoader.LoadService<IMenJinControler>().ReloadMachine();
                 }
             }
             catch (Exception ex)
@@ -166,21 +155,13 @@ namespace CardSolutionHost
 
         private void toolStripMachineShowSet_Click(object sender, EventArgs e)
         {
+            MenJin.MachineManage frmMachineManage = new MenJin.MachineManage();
+            var dia = frmMachineManage.ShowDialog();
             try
             {
-                MenJin.MachineManage frmMachineManage = new MenJin.MachineManage();
-                if (frmMachineManage.ShowDialog() == DialogResult.OK)
+                if (dia == DialogResult.OK)
                 {
-                    for (int i = 0; i < frmMachineManage.dt.Rows.Count; i++)
-                    {
-                        frmMachineManage.dt.Rows[i]["Purpose"] = i;
-                    }
-                    frmMachineManage.dt.AcceptChanges();
-                    var results = frmMachineManage.dt.ToList<Model_Service.MenJin.Machine>();
-                    if (frmMachineManage.machinesBLL.SaveList(results))
-                    {
-                        MessageBox.Show("保存成功");
-                    }
+                    //ServiceLoader.LoadService<IMenJinControler>().ReloadMachine();
                 }
             }
             catch (Exception ex)
