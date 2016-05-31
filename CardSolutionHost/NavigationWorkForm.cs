@@ -13,6 +13,7 @@ using CardSolutionHost.BLL;
 using System.Collections.Generic;
 using Microsoft.Practices.Unity;
 using CardSolutionHost.Entitys;
+using System.Text.RegularExpressions;
 
 namespace CardSolutionHost
 {
@@ -197,10 +198,7 @@ namespace CardSolutionHost
                     if (runner == null)
                     {
                         runner = CreateRunner(machine);
-                        if (runner == null)
-                            throw new Exception("考勤机数量超出最大限制");
-                        else
-                            this.Runners.Add(runner);
+                        this.Runners.Add(runner);
                     }
                 }
                 runner.RunnerName = machine.MachineAlias;
@@ -226,6 +224,8 @@ namespace CardSolutionHost
 
         private IMenJinRunner CreateRunner(MachinesEntity machine)
         {
+            if (!Regex.IsMatch(machine.IP, @"^((2[0-4]\d|25[0-5]|[01]?\d\d?)\.){3}(2[0-4]\d|25[0-5]|[01]?\d\d?)$"))
+                throw new Exception("IP地址格式错误");
             for (int i = 0; i < 35; i++)
             {
                 string key = string.Format("{0}{1}", ctlName, (i + 1));
@@ -240,7 +240,7 @@ namespace CardSolutionHost
                     return ctl.Runner;
                 }
             }
-            return null;
+            throw new Exception("考勤机数量超出最大限制");
         }
         #endregion
 

@@ -14,10 +14,12 @@ namespace CardSolutionHost
 {
     public partial class APIForm : Form
     {
+        ManualResetEvent manualresetevent;
         public CZKEMClass API { get; set; }
-        public APIForm()
+        public APIForm(ManualResetEvent manualresetevent)
         {
             InitializeComponent();
+            this.manualresetevent = manualresetevent;
             API = new CZKEMClass();
             API.OnHIDNum += API_OnHIDNum;
         }
@@ -28,6 +30,7 @@ namespace CardSolutionHost
         private void APIForm_Shown(object sender, EventArgs e)
         {
             this.Visible = false;
+            this.manualresetevent.Set();
         }
 
         internal bool Connect_Net(string Ip, int Port)
