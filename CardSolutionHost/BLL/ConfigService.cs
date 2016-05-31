@@ -13,7 +13,8 @@ namespace CardSolutionHost.BLL
         const string Sql_GetConfigByConfigName = "select * from T_Config where ConfigName=$ConfigName";
         public ConfigEntity GetConfigByConfigName(string ConfigName)
         {
-            DbCommand cmd = Database.GetSqlStringCommand(Sql_GetConfigs);
+            DbCommand cmd = Database.GetSqlStringCommand(Sql_GetConfigByConfigName);
+            Database.AddInParameter(cmd, "ConfigName", DbType.String, ConfigName);
             DataSet ds = Database.ExecuteDataSet(cmd);
             if (ds == null || ds.Tables.Count <= 0)
                 return null;

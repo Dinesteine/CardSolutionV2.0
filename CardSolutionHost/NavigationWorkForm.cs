@@ -236,6 +236,7 @@ namespace CardSolutionHost
                 {
                     ctl.Runner = ServiceLoader.LoadService<IMenJinRunner>(
                         new ParameterOverride("Host", ctl),
+                        new ParameterOverride("MachineNumber", machine.MachineNumber),
                         new ParameterOverride("IP", machine.IP),
                         new ParameterOverride("Port", machine.Port),
                         new ParameterOverride("RunnerName", machine.MachineAlias)
@@ -244,11 +245,6 @@ namespace CardSolutionHost
                 }
             }
             throw new Exception("考勤机数量超出最大限制");
-        }
-        private void 刷新ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //Control.AppContainer appContainer = ((ContextMenuStrip)((ToolStripMenuItem)sender).GetCurrentParent()).SourceControl as Control.AppContainer;
-            //appContainer.RefreshMachine();
         }
     }
 }

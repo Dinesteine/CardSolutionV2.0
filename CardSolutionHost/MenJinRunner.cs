@@ -9,6 +9,7 @@ using System.Net.NetworkInformation;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
+using CardSolutionHost.BLL;
 
 namespace CardSolutionHost
 {
@@ -19,6 +20,8 @@ namespace CardSolutionHost
         public string IP { get; private set; }
 
         public int Port { get; private set; }
+
+        public int MachineNumber { get; private set; }
 
         private string _RunnerName;
         public string RunnerName
@@ -48,8 +51,9 @@ namespace CardSolutionHost
             }
         }
         APIForm apiform;
-        public MenJinRunner(AppContainer Host, string IP, int Port, string RunnerName)
+        public MenJinRunner(AppContainer Host, int MachineNumber, string IP, int Port, string RunnerName)
         {
+            this.MachineNumber = MachineNumber;
             this.Host = Host;
             this.IP = IP;
             this.Port = Port;
@@ -75,6 +79,7 @@ namespace CardSolutionHost
                 Thread thread = new Thread(new ThreadStart(() =>
                 {
                     apiform = new APIForm(manualresetevent);
+                    apiform.OnHIDNum += Apiform_OnHIDNum;
                     if (apiform.Connect_Net(IP, Port))
                     {
                         if (apiform.RegEvent(1, 65535))
@@ -107,6 +112,43 @@ namespace CardSolutionHost
                 Logger.Writer.Write(ex);
             }
         }
+        volatile bool OnCardNum = false;
+        private void Apiform_OnHIDNum(int CardNumber)
+        {
+            try
+            {
+                lock (this)
+                {
+                    if (OnCardNum) return;
+                    OnCardNum = true;
+                }
+                string strCardNo = CardNumber.ToString();
+                if (CardNumber < 0)
+                {
+                    string str = CardNumber.ToString("x8").PadLeft(8);
+                    strCardNo = long.Parse(str, System.Globalization.NumberStyles.HexNumber).ToString();
+                }
+                short errorFlag = new MenJinService().GetOpenResult(strCardNo, this.IP);
+                if (errorFlag == 1)
+                {
+                    apiform.PlayVoiceByIndex(10);
+                }
+                else if (errorFlag == 2)
+                {
+                    apiform.PlayVoiceByIndex(10);
+                    apiform.ACUnlock(MachineNumber, 200);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Writer.Write(ex);
+            }
+            finally
+            {
+                OnCardNum = false;
+            }
+        }
+
         public void Stop()
         {
             SetVisible(false);

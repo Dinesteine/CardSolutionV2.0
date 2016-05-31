@@ -31,6 +31,17 @@ namespace CardSolutionHost.BLL
         }
 
         const string Sql_UpdateMachines = "update Machines set MachineAlias=@MachineAlias,ConnectType=@ConnectType,IP=@IP,SerialPort=@SerialPort,Port=@Port,Baudrate=@Baudrate,MachineNumber=@MachineNumber,IsHost=@IsHost,Enabled=@Enabled,CommPassword=@CommPassword,UILanguage=@UILanguage,DateFormat=@DateFormat,InOutRecordWarn=@InOutRecordWarn,Idle=@Idle,Voice=@Voice,managercount=@managercount,usercount=@usercount,fingercount=@fingercount,SecretCount=@SecretCount,FirmwareVersion=@FirmwareVersion,ProductType=@ProductType,LockControl=@LockControl,Purpose=@Purpose,DeviceNetmask=@DeviceNetmask,DeviceGetway=@DeviceGetway,sn=@sn,PhotoStamp=@PhotoStamp where ID=@ID";
+
+        internal short GetOpenResult(string strCardNo, string Ip)
+        {
+            DbCommand cmd = Database.GetStoredProcCommand("PR_OpenTheDoor");
+            Database.AddInParameter(cmd, "CardNo", DbType.String, strCardNo);
+            Database.AddInParameter(cmd, "Ip", DbType.String, Ip);
+            Database.AddParameter(cmd, "result", DbType.String, 100, ParameterDirection.InputOutput, true, 0, 0, String.Empty, DataRowVersion.Default, 0);
+            Database.ExecuteNonQuery(cmd);
+            return (short)Database.GetParameterValue(cmd, "result");
+        }
+
         public void SaveMachinesEntitys(List<MachinesEntity> entitys)
         {
             base.UseTran((tran) =>

@@ -38,6 +38,7 @@ namespace CardSolutionHost
             if (ex != null)
             {
                 Logger.Writer.Write(ex, TraceEventType.Critical);
+                throw ex;
             }
         }
 
@@ -47,6 +48,7 @@ namespace CardSolutionHost
             if (ex != null)
             {
                 Logger.Writer.Write(ex, TraceEventType.Critical);
+                throw ex;
             }
         }
     }

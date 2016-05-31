@@ -56,5 +56,110 @@ namespace CardSolutionHost.Core
                 _MenJinReStartTime = value;
             }
         }
+        private static int _UdpMsgServicePort = -1;
+        public static int UdpMsgServicePort
+        {
+            get
+            {
+                if (_UdpMsgServicePort == -1)
+                {
+                    _UdpMsgServicePort = int.Parse(new ConfigService().GetConfigByConfigName("UdpMsgServicePort").ConfigValue);
+                }
+                return _UdpMsgServicePort;
+            }
+            set
+            {
+                if (value <= 0)
+                    throw new Exception("端口不正确");
+                if (_UdpMsgServicePort == value)
+                    return;
+                new ConfigService().SaveEntity(new Entitys.ConfigEntity()
+                {
+                    ConfigName = "UdpMsgServicePort",
+                    ConfigValue = value.ToString()
+                });
+                _UdpMsgServicePort = value;
+            }
+        }
+
+
+
+
+        private static string _WCFServiceIpAddress;
+        public static string WCFServiceIpAddress
+        {
+            get
+            {
+                if (_WCFServiceIpAddress == null)
+                {
+                    _WCFServiceIpAddress = new ConfigService().GetConfigByConfigName("WCFServiceIpAddress").ConfigValue;
+                    if (_WCFServiceIpAddress == null)
+                        throw new Exception("WCFServiceIp配置错误");
+                }
+                return _WCFServiceIpAddress;
+            }
+            set
+            {
+                new ConfigService().SaveEntity(new Entitys.ConfigEntity()
+                {
+                    ConfigName = "WCFServiceIpAddress",
+                    ConfigValue = value
+                });
+                _WCFServiceIpAddress = value;
+            }
+        }
+
+        private static int _WcfServicePort = -1;
+        public static int WcfServicePort
+        {
+            get
+            {
+                if (_WcfServicePort == -1)
+                {
+                    _WcfServicePort = int.Parse(new ConfigService().GetConfigByConfigName("WcfServicePort").ConfigValue);
+                }
+                return _WcfServicePort;
+            }
+            set
+            {
+                if (value <= 0)
+                    throw new Exception("端口不正确");
+                if (_WcfServicePort == value)
+                    return;
+                new ConfigService().SaveEntity(new Entitys.ConfigEntity()
+                {
+                    ConfigName = "WcfServicePort",
+                    ConfigValue = value.ToString()
+                });
+                _WcfServicePort = value;
+            }
+        }
+        
+
+        //UdpMsgServicePort
+
+        //private static string _SqlConnectionString;
+        //public static string SqlConnectionString
+        //{
+        //    get
+        //    {
+        //        if (_SqlConnectionString == null)
+        //        {
+        //            _SqlConnectionString = new ConfigService().GetConfigByConfigName("SqlConnectionString").ConfigValue;
+        //            if (_SqlConnectionString == null)
+        //                throw new Exception("数据库连接字符串未配置");
+        //        }
+        //        return _MenJinReStartTime;
+        //    }
+        //    set
+        //    {
+        //        new ConfigService().SaveEntity(new Entitys.ConfigEntity()
+        //        {
+        //            ConfigName = "SqlConnectionString",
+        //            ConfigValue = value
+        //        });
+        //        _SqlConnectionString = value;
+        //    }
+        //}
     }
 }

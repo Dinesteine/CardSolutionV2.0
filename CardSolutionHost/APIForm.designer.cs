@@ -40,7 +40,6 @@
             this.ShowInTaskbar = false;
             this.Text = "APIForm";
             this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
-            this.Load += new System.EventHandler(this.APIForm_Load);
             this.Shown += new System.EventHandler(this.APIForm_Shown);
             this.ResumeLayout(false);
 

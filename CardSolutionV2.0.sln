@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardSolutionHost", "CardSolutionHost\CardSolutionHost.csproj", "{84AC1CD6-DD75-49E8-9192-6474457BA22C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2P.WellKnown", "P2P.WellKnown\P2P.WellKnown.csproj", "{24A62D81-E28B-41AE-AF98-9DF4D4ACD245}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{84AC1CD6-DD75-49E8-9192-6474457BA22C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84AC1CD6-DD75-49E8-9192-6474457BA22C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84AC1CD6-DD75-49E8-9192-6474457BA22C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24A62D81-E28B-41AE-AF98-9DF4D4ACD245}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24A62D81-E28B-41AE-AF98-9DF4D4ACD245}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24A62D81-E28B-41AE-AF98-9DF4D4ACD245}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24A62D81-E28B-41AE-AF98-9DF4D4ACD245}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
