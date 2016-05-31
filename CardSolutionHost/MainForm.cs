@@ -102,26 +102,12 @@ namespace CardSolutionHost
 
         public void toolStripRefreshServer_Click(object sender, EventArgs e)
         {
-            try
-            {
-                ServiceLoader.LoadService<IMenJinControler>().RunRefreshMachine();
-            }
-            catch (Exception ex)
-            {
-                Logger.Writer.Write(ex);
-            }
+            ServiceLoader.LoadService<IMenJinControler>().RunRefreshMachine();
         }
 
         public void toolStripStartServer_Click(object sender, EventArgs e)
         {
-            try
-            {
-                ServiceLoader.LoadService<IMenJinControler>().RunReloadMachine();
-            }
-            catch (Exception ex)
-            {
-                Logger.Writer.Write(ex);
-            }
+            ServiceLoader.LoadService<IMenJinControler>().RunReloadMachine();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)

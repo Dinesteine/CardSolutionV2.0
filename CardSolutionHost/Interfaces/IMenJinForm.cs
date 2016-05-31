@@ -8,16 +8,16 @@ namespace CardSolutionHost.Interfaces
 {
     public interface IMenJinRunner
     {
-        string RunnerName { get; set; }
+        string RunnerName { get; }
         string IP { get; }
         int Port { get; }
         Control.AppContainer Host { get; }
         void Run(ref bool CanPing);
         RunnerState RunnerState { get; }
+        void Stop();
     }
     public interface IMenJinControler
     {
-        int OPCode { get; set; }
         void RunRefreshMachine();
         void RunReloadMachine();
         List<IMenJinRunner> Runners { get; }
