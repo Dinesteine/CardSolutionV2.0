@@ -17,6 +17,7 @@ namespace CardSolutionHost
         [STAThread]
         static void Main()
         {
+            Thread.Sleep(1000);
             bool isNotRun = false;
             RunMutex = new System.Threading.Mutex(true, "CardSolutionHost", out isNotRun);
             if (!isNotRun) return;

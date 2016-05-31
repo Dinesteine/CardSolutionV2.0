@@ -32,6 +32,18 @@ namespace CardSolutionHost.BLL
         volatile bool HasHandle = false;
         private void Run()
         {
+            try
+            {
+                var entity = new ConfigService().GetConfigByConfigName("LastMenJinReStartTime");
+                if (entity != null)
+                {
+                    if (entity.ConfigValue == DateTime.Now.ToString("yyyy-MM-dd HH:mm"))
+                        HasHandle = true;
+                }
+            }
+            catch (Exception)
+            {
+            }
             statecode = 1;
             while (statecode == 1)
             {
@@ -43,15 +55,23 @@ namespace CardSolutionHost.BLL
                 bool handle = false;
                 lock (lockobj)
                 {
-                    if (HasHandle) continue;
                     if (SystemConfig.MenJinReStartTime == DateTime.Now.ToString("HH:mm"))
                     {
+                        if (HasHandle) continue;
                         handle = true;
                         HasHandle = true;
+                    }
+                    else
+                    {
+                        HasHandle = false;
                     }
                 }
                 if (handle)
                 {
+                    var configservice = new ConfigService();
+                    var entity = configservice.GetConfigByConfigName("LastMenJinReStartTime");
+                    entity.ConfigValue = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
+                    configservice.SaveEntity(entity);
                     Application.Restart();
                 }
             }
