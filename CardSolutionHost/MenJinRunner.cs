@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace CardSolutionHost
 {
-    public class Runner : IMenJinRunner
+    public class MenJinRunner : IMenJinRunner
     {
         public AppContainer Host { get; private set; }
 
@@ -29,6 +29,7 @@ namespace CardSolutionHost
         {
             try
             {
+                RunnerState = RunnerState.Connecting;
                 if (apiform != null)
                 {
                     apiform.Close();
@@ -67,7 +68,10 @@ namespace CardSolutionHost
                         manualresetevent.Set();
                         return;
                     }
-                    Application.Run(apiform);
+                    Host.Invoke(new Action(() =>
+                    {
+                        Application.Run(apiform);
+                    }));
                 }));
                 thread.IsBackground = true;
                 thread.Start();
@@ -80,7 +84,7 @@ namespace CardSolutionHost
                 Logger.Writer.Write(ex);
             }
         }
-        public Runner(AppContainer Host, string IP, int Port)
+        public MenJinRunner(AppContainer Host, string IP, int Port)
         {
             this.Host = Host;
             this.IP = IP;
