@@ -41,7 +41,7 @@
             this.关于ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.帮助ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
-            this.toolStripStartServer = new System.Windows.Forms.ToolStripButton();
+            this.toolStripReStartServer = new System.Windows.Forms.ToolStripButton();
             this.toolStripRefreshServer = new System.Windows.Forms.ToolStripButton();
             this.toolStripACTimeZones = new System.Windows.Forms.ToolStripButton();
             this.toolStripacholiday = new System.Windows.Forms.ToolStripButton();
@@ -159,7 +159,7 @@
             this.toolStrip.AutoSize = false;
             this.toolStrip.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStartServer,
+            this.toolStripReStartServer,
             this.toolStripRefreshServer,
             this.toolStripACTimeZones,
             this.toolStripacholiday,
@@ -176,19 +176,19 @@
             this.toolStrip.Size = new System.Drawing.Size(739, 43);
             this.toolStrip.TabIndex = 2;
             // 
-            // toolStripStartServer
+            // toolStripReStartServer
             // 
-            this.toolStripStartServer.Image = ((System.Drawing.Image)(resources.GetObject("toolStripStartServer.Image")));
-            this.toolStripStartServer.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.toolStripStartServer.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.toolStripStartServer.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripStartServer.Name = "toolStripStartServer";
-            this.toolStripStartServer.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.toolStripStartServer.Size = new System.Drawing.Size(94, 40);
-            this.toolStripStartServer.Text = "启动门禁服务";
-            this.toolStripStartServer.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.toolStripStartServer.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.toolStripStartServer.Click += new System.EventHandler(this.toolStripStartServer_Click);
+            this.toolStripReStartServer.Image = ((System.Drawing.Image)(resources.GetObject("toolStripReStartServer.Image")));
+            this.toolStripReStartServer.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.toolStripReStartServer.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripReStartServer.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripReStartServer.Name = "toolStripReStartServer";
+            this.toolStripReStartServer.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.toolStripReStartServer.Size = new System.Drawing.Size(94, 40);
+            this.toolStripReStartServer.Text = "重启门禁服务";
+            this.toolStripReStartServer.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.toolStripReStartServer.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolStripReStartServer.Click += new System.EventHandler(this.toolStripStartServer_Click);
             // 
             // toolStripRefreshServer
             // 
@@ -312,7 +312,7 @@
             this.toolStripStatusSet.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripStatusSet.Name = "toolStripStatusSet";
             this.toolStripStatusSet.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.toolStripStatusSet.Size = new System.Drawing.Size(118, 40);
+            this.toolStripStatusSet.Size = new System.Drawing.Size(118, 37);
             this.toolStripStatusSet.Text = "门禁刷新重启设置";
             this.toolStripStatusSet.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.toolStripStatusSet.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
@@ -326,7 +326,7 @@
             this.toolStripExit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripExit.Name = "toolStripExit";
             this.toolStripExit.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.toolStripExit.Size = new System.Drawing.Size(46, 40);
+            this.toolStripExit.Size = new System.Drawing.Size(46, 37);
             this.toolStripExit.Text = "退出";
             this.toolStripExit.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.toolStripExit.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
@@ -477,7 +477,7 @@
         private System.Windows.Forms.ToolStripButton toolStripExit;
         private System.Windows.Forms.ToolStripMenuItem 数据库连接ToolStripMenuItem;
         public System.Windows.Forms.ToolStripButton toolStripRefreshServer;
-        public System.Windows.Forms.ToolStripButton toolStripStartServer;
+        public System.Windows.Forms.ToolStripButton toolStripReStartServer;
         private System.Windows.Forms.ToolStripButton toolStripStatusSet;
         private System.Windows.Forms.ToolStripButton toolStripMachineShowSet;
         private System.Windows.Forms.NotifyIcon notifyIcon;

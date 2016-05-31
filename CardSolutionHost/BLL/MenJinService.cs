@@ -25,7 +25,7 @@ namespace CardSolutionHost.BLL
         const string Sql_GetEnableMachinesEntitys = "select * from Machines where Enabled = 1";
         public List<MachinesEntity> GetEnableMachinesEntitys()
         {
-            DbCommand cmd = Database.GetSqlStringCommand(Sql_GetMachinesEntityDt);
+            DbCommand cmd = Database.GetSqlStringCommand(Sql_GetEnableMachinesEntitys);
             DataSet ds = Database.ExecuteDataSet(cmd);
             return ClassValueCopier.GetArrayFromDataTable<MachinesEntity>(ds.Tables[0]);
         }

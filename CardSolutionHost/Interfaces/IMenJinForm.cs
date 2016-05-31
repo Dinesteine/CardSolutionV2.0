@@ -6,21 +6,26 @@ using zkemkeeper;
 
 namespace CardSolutionHost.Interfaces
 {
-    public interface IRunner
+    public interface IMenJinRunner
     {
         string RunnerName { get; set; }
         string IP { get; }
         int Port { get; }
         Control.AppContainer Host { get; }
-        void Run();
+        void Run(ref bool CanPing);
+        RunnerState RunnerState { get; }
     }
     public interface IMenJinControler
     {
-        List<IRunner> Runners { get; }
+        int OPCode { get; set; }
+        void RunRefreshMachine();
+        void RunReloadMachine();
+        List<IMenJinRunner> Runners { get; }
     }
-    public interface IMainform
+    public interface IMenJinHost
     {
-
+        bool CanReStart { get; set; }
+        bool CanRefresh { get; set; }
     }
     public enum RunnerState
     {

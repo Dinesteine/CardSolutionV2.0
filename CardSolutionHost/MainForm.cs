@@ -7,18 +7,20 @@ using WeifenLuo.WinFormsUI.Docking;
 
 namespace CardSolutionHost
 {
-    public partial class MainForm : WeifenLuo.WinFormsUI.Docking.DockContent, IMainform
+    public partial class MainForm : WeifenLuo.WinFormsUI.Docking.DockContent, IMenJinHost
     {
         public MainForm()
         {
             InitializeComponent();
         }
         bool loaded = false;
+
         private void MainForm_Load(object sender, EventArgs e)
         {
             try
             {
                 if (loaded) return;
+                #region 启动门禁监控
                 NavigationWorkForm navigationForm = null;
                 foreach (DockContent frm in this.dockPanel.Contents)
                 {
@@ -31,6 +33,7 @@ namespace CardSolutionHost
                 navigationForm = ServiceLoader.LoadService<IMenJinControler>() as NavigationWorkForm;
                 navigationForm.ShowHint = DockState.Document;
                 navigationForm.Show(dockPanel);
+                #endregion
                 loaded = true;
             }
             catch (Exception)
@@ -39,6 +42,7 @@ namespace CardSolutionHost
                 Environment.Exit(-1);
             }
         }
+        #region 菜单事件
         private void toolStripUpLoad_Click(object sender, EventArgs e)
         {
             //CardSolutionHost.MenJin.MenJinLog frm = new CardSolutionHost.MenJin.MenJinLog();
@@ -100,7 +104,7 @@ namespace CardSolutionHost
         {
             try
             {
-                //ServiceLoader.LoadService<IMenJinControler>().RefreshMachine();
+                ServiceLoader.LoadService<IMenJinControler>().RunRefreshMachine();
             }
             catch (Exception ex)
             {
@@ -112,7 +116,7 @@ namespace CardSolutionHost
         {
             try
             {
-                //ServiceLoader.LoadService<IMenJinControler>().ReloadMachine();
+                ServiceLoader.LoadService<IMenJinControler>().RunReloadMachine();
             }
             catch (Exception ex)
             {
@@ -193,6 +197,50 @@ namespace CardSolutionHost
             if (MessageBox.Show("是否确认退出？", "", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
             Application.Exit();
+        }
+        #endregion
+
+
+        public bool CanReStart
+        {
+            get
+            {
+                return (bool)this.Invoke(new Func<bool>(() =>
+                {
+                    return toolStripReStartServer.Enabled;
+                }));
+            }
+
+            set
+            {
+                this.Invoke(new Action(() =>
+                {
+                    if (toolStripReStartServer.Enabled == value)
+                        return;
+                    toolStripReStartServer.Enabled = value;
+                }));
+            }
+        }
+
+        public bool CanRefresh
+        {
+            get
+            {
+                return (bool)this.Invoke(new Func<bool>(() =>
+                 {
+                     return toolStripRefreshServer.Enabled;
+                 }));
+            }
+
+            set
+            {
+                this.Invoke(new Action(() =>
+                {
+                    if (toolStripRefreshServer.Enabled == value)
+                        return;
+                    toolStripRefreshServer.Enabled = value;
+                }));
+            }
         }
     }
 }

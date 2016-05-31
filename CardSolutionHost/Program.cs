@@ -28,7 +28,7 @@ namespace CardSolutionHost
             Application.ThreadException += Application_ThreadException;
             //处理非UI线程异常   
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-            var mainForm =  ServiceLoader.LoadService<IMainform>() as MainForm;
+            var mainForm =  ServiceLoader.LoadService<IMenJinHost>() as MainForm;
             Application.Run(mainForm);
         }
 

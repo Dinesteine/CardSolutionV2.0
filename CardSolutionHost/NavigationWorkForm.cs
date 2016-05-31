@@ -18,13 +18,47 @@ namespace CardSolutionHost
 {
     public partial class NavigationWorkForm : WeifenLuo.WinFormsUI.Docking.DockContent, IMenJinControler
     {
-        public List<IRunner> Runners { get; private set; }
+        public List<IMenJinRunner> Runners { get; private set; }
         object lockobj = new object();
         string ctlName = "appContainer";
+        volatile int opCode = 0;
+        public int OPCode
+        {
+            get
+            {
+                return opCode;
+            }
+            set
+            {
+                lock (lockobj)
+                {
+                    try
+                    {
+                        if (value == 0)
+                        {
+                            ServiceLoader.LoadService<IMenJinHost>().CanRefresh = true;
+                            ServiceLoader.LoadService<IMenJinHost>().CanReStart = true;
+                        }
+                        else
+                        {
+                            ServiceLoader.LoadService<IMenJinHost>().CanRefresh = false;
+                            ServiceLoader.LoadService<IMenJinHost>().CanReStart = false;
+                        }
+                        if (value < 0)
+                            opCode = 0;
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Writer.Write(ex);
+                    }
+                    opCode = value;
+                }
+            }
+        }
         public NavigationWorkForm()
         {
             InitializeComponent();
-            Runners = new List<IRunner>();
+            Runners = new List<IMenJinRunner>();
         }
 
         bool loaded = false;
@@ -33,91 +67,110 @@ namespace CardSolutionHost
             if (loaded) return;
             loaded = true;
             RunReloadMachine();
+            Thread thread = new Thread(RunRefreshMachinePerMinutes);
+            thread.IsBackground = true;
+            thread.Start();
         }
 
-        //public void RunRefreshMachinePerMinutes()
-        //{
-        //    while (true)
-        //    {
-        //        try
-        //        {
-        //            RunRefreshMachine();
-        //            Thread.Sleep(SystemConfig.MenJinRefreshMinutes * 60 * 1000);
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            Logger.Writer.Write(ex);
-        //        }
-        //    }
-        //}
+        public void RunRefreshMachinePerMinutes()
+        {
+            while (true)
+            {
+                try
+                {
+                    Thread.Sleep(SystemConfig.MenJinRefreshMinutes * 60 * 1000);
+                    RunRefreshMachine();
+                    while (opCode != 0)
+                    {
+                        Thread.Sleep(100);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Writer.Write(ex);
+                }
+            }
+        }
         #region 刷新
-        //public void RunRefreshMachine()
-        //{
-        //    for (int i = 0; i < 35; i++)
-        //    {
-        //        var threadrefresh = new Thread(new ThreadStart(() =>
-        //        {
-        //            string key = string.Format("{0}{1}", ctlName, (i + 1));
-        //            RefreshMachine(this.Controls[key] as Control.AppContainer);
-        //        }));
-        //        threadrefresh.IsBackground = true;
-        //        threadrefresh.Start();
-        //    }
-        //}
-        //public void RefreshMachine(IRunner Runner)
-        //{
-        //    Runner.RunnerState = RunnerState.Connecting;
-        //    try
-        //    {
-        //        //if (_machine == null) { this.SetVisible(false); return; }
-        //        //if (_api == null) { this.SetImage(Control.AppContainer.图片状态.失败); return; }
-        //        //this.SetVisible(true);
-        //        Runner.RunnerName = _machine.MachineAlias;
-        //        this.SetText(_machine.MachineAlias);
-        //        var replay = new Ping().Send(_machine.IP);
-        //        if (replay.Status == IPStatus.Success)
-        //        {
-        //            int num1 = 1;
-        //            bool result = _api.GetDeviceStatus(1, 1, num1);
-        //            if (result)
-        //            {
-        //                this.SetImage(图片状态.成功);
-        //            }
-        //            else
-        //            {
-        //                int count = 0;
-        //                ReloadMachine(_machine, ref count);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            this.SetImage(图片状态.失败);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        try
-        //        {
-        //            if (Program.isDebug)
-        //                Program.log.Error(ex);
-        //            _api.OnHIDNum -= CZKEMClass_OnHIDNum;
-        //            _api.Disconnect();
-        //        }
-        //        catch (Exception exx)
-        //        {
-        //            if (Program.isDebug)
-        //                Program.log.Error(exx);
-        //        }
-        //        this.SetImage(图片状态.失败);
-        //    }
-        //}
+        public void RunRefreshMachine()
+        {
+            lock (lockobj)
+            {
+                try
+                {
+                    if (opCode != 0) return;
+                    for (int i = 0; i < 35; i++)
+                    {
+                        string key = string.Format("{0}{1}", ctlName, (i + 1));
+                        var ctl = this.Controls[key] as Control.AppContainer;
+                        if (ctl.Runner != null)
+                            this.opCode++;
+                    }
+                    this.OPCode = this.opCode;
+                }
+                catch (Exception ex)
+                {
+                    this.opCode = 0;
+                    Logger.Writer.Write(ex);
+                }
+            }
+            for (int i = 0; i < 35; i++)
+            {
+                string key = string.Format("{0}{1}", ctlName, (i + 1));
+                var ctl = this.Controls[key] as Control.AppContainer;
+                if (ctl.Runner != null)
+                {
+                    Thread thread = new Thread(new ParameterizedThreadStart(RefreshMachine));
+                    thread.IsBackground = true;
+                    thread.Start(ctl.Runner);
+                }
+            }
+        }
+        public void RefreshMachine(object para)
+        {
+            try
+            {
+                IMenJinRunner runner = (IMenJinRunner)para;
+                for (int i = 0; i < 3; i++)
+                {
+                    bool CanPing = false;
+                    runner.Run(ref CanPing);
+                    if (runner.RunnerState == RunnerState.Success)
+                        break;
+                    if (!CanPing)
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Writer.Write(ex);
+            }
+            finally
+            {
+                this.OPCode--;
+            }
+        }
         #endregion
         #region 重启
         public void RunReloadMachine()
         {
             try
             {
-                var machines = new MenJinService().GetEnableMachinesEntitys().OrderBy(t => t.MachineNumber).ToList();
+                List<MachinesEntity> machines = null;
+                lock (lockobj)
+                {
+                    try
+                    {
+                        if (opCode != 0) return;
+                        machines = new MenJinService().GetEnableMachinesEntitys().OrderBy(t => t.MachineNumber).ToList();
+                        this.OPCode = machines.Count;
+                    }
+                    catch (Exception ex)
+                    {
+                        opCode = 0;
+                        Logger.Writer.Write(ex);
+                    }
+                }
                 foreach (var machine in machines)
                 {
                     Thread thread = new Thread(new ParameterizedThreadStart(ReloadMachine));
@@ -137,7 +190,7 @@ namespace CardSolutionHost
             try
             {
                 MachinesEntity machine = (MachinesEntity)para;
-                IRunner runner;
+                IMenJinRunner runner;
                 lock (lockobj)
                 {
                     runner = this.Runners.FirstOrDefault(t => t.IP == machine.IP);
@@ -151,15 +204,27 @@ namespace CardSolutionHost
                     }
                 }
                 runner.RunnerName = machine.MachineAlias;
-                runner.Run();
+                for (int i = 0; i < 3; i++)
+                {
+                    bool CanPing = false;
+                    runner.Run(ref CanPing);
+                    if (runner.RunnerState == RunnerState.Success)
+                        break;
+                    if (!CanPing)
+                        break;
+                }
             }
             catch (Exception ex)
             {
                 Logger.Writer.Write(ex);
             }
+            finally
+            {
+                this.OPCode--;
+            }
         }
 
-        private IRunner CreateRunner(MachinesEntity machine)
+        private IMenJinRunner CreateRunner(MachinesEntity machine)
         {
             for (int i = 0; i < 35; i++)
             {
@@ -167,9 +232,10 @@ namespace CardSolutionHost
                 var ctl = this.Controls[key] as Control.AppContainer;
                 if (ctl.Runner == null)
                 {
-                    ctl.Runner = ServiceLoader.LoadService<IRunner>(
+                    ctl.Runner = ServiceLoader.LoadService<IMenJinRunner>(
                         new ParameterOverride("Host", ctl),
-                        new ParameterOverride("IP", machine.IP)
+                        new ParameterOverride("IP", machine.IP),
+                        new ParameterOverride("Port", machine.Port)
                         );
                     return ctl.Runner;
                 }
