@@ -3,6 +3,7 @@ using CardSolutionHost.Core;
 using CardSolutionHost.Interfaces;
 using Microsoft.Practices.EnterpriseLibrary.Logging;
 using System;
+using System.Net;
 using System.ServiceModel;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
@@ -19,6 +20,7 @@ namespace CardSolutionHost
         UdpMsgService udpmsgservice;
         IReStartService irestartservice;
         ServiceHost hostZKService = null;
+        ServiceHost menjincontrolerservice = null;
         private void MainForm_Load(object sender, EventArgs e)
         {
             try
@@ -51,7 +53,7 @@ namespace CardSolutionHost
                 {
                     hostZKService = new ServiceHost(typeof(CardSystem_Service.ZKManage.ZKService));
                     System.ServiceModel.Channels.Binding binding = new NetTcpBinding(SecurityMode.None);
-                    string strUrl = string.Format("net.tcp://{0}:{1}/ZK/ZKService", SystemConfig.WCFServiceIpAddress, SystemConfig.WcfServicePort);
+                    string strUrl = string.Format("net.tcp://{0}:{1}/ZK/ZKService", IPAddress.Any, SystemConfig.WcfServicePort);
                     hostZKService.AddServiceEndpoint(typeof(CardSystem_Service.ZKManage.IZKService), binding, strUrl);
                     if (hostZKService.Description.Behaviors.Find<System.ServiceModel.Description.ServiceMetadataBehavior>() == null)
                     {
@@ -64,12 +66,55 @@ namespace CardSolutionHost
                 if (hostZKService.State != CommunicationState.Opened)
                     hostZKService.Open();
                 #endregion;
+
+                //#region menjincontrolerservice
+                //if (menjincontrolerservice == null)
+                //{
+                //    menjincontrolerservice = new ServiceHost(typeof(MenJinControlerService));
+                //    System.ServiceModel.Channels.Binding binding = new NetTcpBinding(SecurityMode.None);
+                //    string strUrl = string.Format("net.tcp://{0}:{1}/MenJinControlerService", IPAddress.Any, SystemConfig.WcfServicePort);
+                //    menjincontrolerservice.AddServiceEndpoint(typeof(IMenJinControlerService), binding, strUrl);
+                //    if (menjincontrolerservice.Description.Behaviors.Find<System.ServiceModel.Description.ServiceMetadataBehavior>() == null)
+                //    {
+                //        System.ServiceModel.Channels.BindingElement elemnt = new System.ServiceModel.Channels.TcpTransportBindingElement();
+                //        System.ServiceModel.Channels.CustomBinding bind = new System.ServiceModel.Channels.CustomBinding(elemnt);
+                //        menjincontrolerservice.Description.Behaviors.Add(new System.ServiceModel.Description.ServiceMetadataBehavior());
+                //        menjincontrolerservice.AddServiceEndpoint(typeof(System.ServiceModel.Description.IMetadataExchange), bind, strUrl + "/Mex");
+                //    }
+                //}
+                //if (menjincontrolerservice.State != CommunicationState.Opened)
+                //    menjincontrolerservice.Open();
+                //#endregion;
+
+                #region menjincontrolerservice
+                if (menjincontrolerservice == null)
+                {
+                    menjincontrolerservice = new ServiceHost(typeof(MenJinControlerService));
+                    System.ServiceModel.Channels.Binding binding = new NetTcpBinding(SecurityMode.None) { MaxReceivedMessageSize = 2147483647 };
+                    //string strUrl = string.Format("net.tcp://{0}:{1}/MenJinControlerService", "192.168.0.170", SystemConfig.WcfServicePort);
+                    string strUrl = string.Format("net.tcp://{0}:{1}/MenJinControlerService", IPAddress.Any, SystemConfig.WcfServicePort);
+                    menjincontrolerservice.AddServiceEndpoint(typeof(IMenJinControlerService), binding, strUrl);
+
+                    if (menjincontrolerservice.Description.Behaviors.Find<System.ServiceModel.Description.ServiceMetadataBehavior>() == null)
+                    {
+                        System.ServiceModel.Channels.BindingElement elemnt = new System.ServiceModel.Channels.TcpTransportBindingElement();
+                        System.ServiceModel.Channels.CustomBinding bind = new System.ServiceModel.Channels.CustomBinding(elemnt);
+                        menjincontrolerservice.Description.Behaviors.Add(new System.ServiceModel.Description.ServiceMetadataBehavior());
+                        menjincontrolerservice.AddServiceEndpoint(typeof(System.ServiceModel.Description.IMetadataExchange), bind, strUrl + "/Mex");
+                    }
+                }
+                if (menjincontrolerservice.State != CommunicationState.Opened)
+                    menjincontrolerservice.Open();
+                #endregion
+
                 loaded = true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                MessageBox.Show("程序发生了不可预知的错误需要退出");
-                Environment.Exit(-1);
+                Logger.Writer.Write(ex);
+                //MessageBox.Show("程序发生了不可预知的错误需要退出");
+                //Environment.Exit(-1);
+                Application.Restart();
             }
         }
         #region 菜单事件

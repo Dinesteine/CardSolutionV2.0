@@ -82,33 +82,6 @@ namespace CardSolutionHost.Core
             }
         }
 
-
-
-
-        private static string _WCFServiceIpAddress;
-        public static string WCFServiceIpAddress
-        {
-            get
-            {
-                if (_WCFServiceIpAddress == null)
-                {
-                    _WCFServiceIpAddress = new ConfigService().GetConfigByConfigName("WCFServiceIpAddress").ConfigValue;
-                    if (_WCFServiceIpAddress == null)
-                        throw new Exception("WCFServiceIp配置错误");
-                }
-                return _WCFServiceIpAddress;
-            }
-            set
-            {
-                new ConfigService().SaveEntity(new Entitys.ConfigEntity()
-                {
-                    ConfigName = "WCFServiceIpAddress",
-                    ConfigValue = value
-                });
-                _WCFServiceIpAddress = value;
-            }
-        }
-
         private static int _WcfServicePort = -1;
         public static int WcfServicePort
         {
@@ -134,8 +107,35 @@ namespace CardSolutionHost.Core
                 _WcfServicePort = value;
             }
         }
-        
 
+
+
+
+
+
+        //private static string _WCFServiceIpAddress;
+        //public static string WCFServiceIpAddress
+        //{
+        //    get
+        //    {
+        //        if (_WCFServiceIpAddress == null)
+        //        {
+        //            _WCFServiceIpAddress = new ConfigService().GetConfigByConfigName("WCFServiceIpAddress").ConfigValue;
+        //            if (_WCFServiceIpAddress == null)
+        //                throw new Exception("WCFServiceIp配置错误");
+        //        }
+        //        return _WCFServiceIpAddress;
+        //    }
+        //    set
+        //    {
+        //        new ConfigService().SaveEntity(new Entitys.ConfigEntity()
+        //        {
+        //            ConfigName = "WCFServiceIpAddress",
+        //            ConfigValue = value
+        //        });
+        //        _WCFServiceIpAddress = value;
+        //    }
+        //}
         //UdpMsgServicePort
 
         //private static string _SqlConnectionString;

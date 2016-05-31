@@ -92,6 +92,7 @@
     </Compile>
     <Compile Include="BLL\ConfigService.cs" />
     <Compile Include="BLL\IZKService.cs" />
+    <Compile Include="BLL\MenJinControlerService.cs" />
     <Compile Include="BLL\MenJinService.cs" />
     <Compile Include="BLL\MessageService.cs" />
     <Compile Include="BLL\ReStartService.cs" />
