@@ -37,7 +37,7 @@ namespace CardSolutionHost.BLL
             DbCommand cmd = Database.GetStoredProcCommand("PR_OpenTheDoor");
             Database.AddInParameter(cmd, "CardNo", DbType.String, strCardNo);
             Database.AddInParameter(cmd, "Ip", DbType.String, Ip);
-            Database.AddParameter(cmd, "result", DbType.String, 100, ParameterDirection.InputOutput, true, 0, 0, String.Empty, DataRowVersion.Default, 0);
+            Database.AddParameter(cmd, "result", DbType.Int16, 100, ParameterDirection.InputOutput, true, 0, 0, String.Empty, DataRowVersion.Default, 0);
             Database.ExecuteNonQuery(cmd);
             return (short)Database.GetParameterValue(cmd, "result");
         }

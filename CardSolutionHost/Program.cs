@@ -19,7 +19,7 @@ namespace CardSolutionHost
         {
             Thread.Sleep(100);
             bool isNotRun = false;
-            RunMutex = new System.Threading.Mutex(true, "CardSolutionHost1", out isNotRun);
+            RunMutex = new System.Threading.Mutex(true, "CardSolutionHost", out isNotRun);
             if (!isNotRun) return;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

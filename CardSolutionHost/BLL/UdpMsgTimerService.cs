@@ -23,7 +23,7 @@ namespace CardSolutionHost.BLL
                 initautoEvent = new AutoResetEvent(false);
                 opstate = true;
             }
-            timer = new Timer(new TimerCallback(timerCall), this, 0, 0);
+            timer = new Timer(new TimerCallback(timerCall), initautoEvent, 0, 0);
         }
 
         private void timerCall(object state)

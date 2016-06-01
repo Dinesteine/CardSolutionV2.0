@@ -167,12 +167,20 @@ namespace CardSolutionHost
                     var ctl = this.Controls[key] as Control.AppContainer;
                     ctl.Runner = null;
                 }
-                foreach (var machine in machines)
+
+                Thread threadtemp = new Thread(new ThreadStart(() =>
                 {
-                    Thread thread = new Thread(new ParameterizedThreadStart(ReloadMachine));
-                    thread.IsBackground = true;
-                    thread.Start(machine);
-                }
+                    foreach (var machine in machines)
+                    {
+                        var autoEvent = new AutoResetEvent(false);
+                        Thread thread = new Thread(new ParameterizedThreadStart(ReloadMachine));
+                        thread.IsBackground = true;
+                        thread.Start(new object[] { machine, autoEvent });
+                        autoEvent.WaitOne();
+                    }
+                }));
+                threadtemp.IsBackground = true;
+                threadtemp.Start();
             }
             catch (Exception ex)
             {
@@ -184,16 +192,30 @@ namespace CardSolutionHost
         {
             try
             {
-                MachinesEntity machine = (MachinesEntity)para;
+                object[] objs = para as object[];
+                MachinesEntity machine = (MachinesEntity)objs[0];
                 IMenJinRunner runner;
-                lock (lockobj)
+                try
                 {
-                    runner = this.Runners.FirstOrDefault(t => t.IP == machine.IP);
-                    if (runner == null)
+                    lock (lockobj)
                     {
-                        runner = CreateRunner(machine);
-                        this.Runners.Add(runner);
+                        runner = this.Runners.FirstOrDefault(t => t.IP == machine.IP);
+                        if (runner == null)
+                        {
+                            runner = CreateRunner(machine);
+                            this.Runners.Add(runner);
+                        }
                     }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    AutoResetEvent autoEvent = (AutoResetEvent)objs[1];
+                    if (autoEvent != null)
+                        autoEvent.Set();
                 }
                 for (int i = 0; i < 3; i++)
                 {
