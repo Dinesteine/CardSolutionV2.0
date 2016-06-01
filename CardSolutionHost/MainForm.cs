@@ -15,10 +15,20 @@ namespace CardSolutionHost
         public MainForm()
         {
             InitializeComponent();
+            this.Shown += MainForm_Shown;
+
         }
+
+        private void MainForm_Shown(object sender, EventArgs e)
+        {
+            if (loaderror)
+            {
+                new Form_LoadError().ShowDialog(this);
+            }
+        }
+
         bool loaded = false;
-        UdpMsgService udpmsgservice;
-        IReStartService irestartservice;
+        bool loaderror = false;
         ServiceHost hostZKService = null;
         ServiceHost menjincontrolerservice = null;
         private void MainForm_Load(object sender, EventArgs e)
@@ -26,6 +36,14 @@ namespace CardSolutionHost
             try
             {
                 if (loaded) return;
+                #region UdpMsgService
+                var udpmsgservice = ServiceLoader.LoadService<IUdpMsgService>();
+                udpmsgservice.Start();
+                #endregion;
+                #region UdpMsgTimerService
+                var iudpmsgtimerservice = ServiceLoader.LoadService<IUdpMsgTimerService>();
+                iudpmsgtimerservice.Start();
+                #endregion;
                 #region 启动门禁监控
                 NavigationWorkForm navigationForm = null;
                 foreach (DockContent frm in this.dockPanel.Contents)
@@ -40,12 +58,8 @@ namespace CardSolutionHost
                 navigationForm.ShowHint = DockState.Document;
                 navigationForm.Show(dockPanel);
                 #endregion
-                #region UdpMsgService
-                udpmsgservice = new UdpMsgService();
-                udpmsgservice.Start();
-                #endregion;
                 #region IReStartService
-                irestartservice = ServiceLoader.LoadService<IReStartService>();
+                var irestartservice = ServiceLoader.LoadService<IReStartService>();
                 irestartservice.Start();
                 #endregion;
                 #region hostZKService
@@ -66,26 +80,6 @@ namespace CardSolutionHost
                 if (hostZKService.State != CommunicationState.Opened)
                     hostZKService.Open();
                 #endregion;
-
-                //#region menjincontrolerservice
-                //if (menjincontrolerservice == null)
-                //{
-                //    menjincontrolerservice = new ServiceHost(typeof(MenJinControlerService));
-                //    System.ServiceModel.Channels.Binding binding = new NetTcpBinding(SecurityMode.None);
-                //    string strUrl = string.Format("net.tcp://{0}:{1}/MenJinControlerService", IPAddress.Any, SystemConfig.WcfServicePort);
-                //    menjincontrolerservice.AddServiceEndpoint(typeof(IMenJinControlerService), binding, strUrl);
-                //    if (menjincontrolerservice.Description.Behaviors.Find<System.ServiceModel.Description.ServiceMetadataBehavior>() == null)
-                //    {
-                //        System.ServiceModel.Channels.BindingElement elemnt = new System.ServiceModel.Channels.TcpTransportBindingElement();
-                //        System.ServiceModel.Channels.CustomBinding bind = new System.ServiceModel.Channels.CustomBinding(elemnt);
-                //        menjincontrolerservice.Description.Behaviors.Add(new System.ServiceModel.Description.ServiceMetadataBehavior());
-                //        menjincontrolerservice.AddServiceEndpoint(typeof(System.ServiceModel.Description.IMetadataExchange), bind, strUrl + "/Mex");
-                //    }
-                //}
-                //if (menjincontrolerservice.State != CommunicationState.Opened)
-                //    menjincontrolerservice.Open();
-                //#endregion;
-
                 #region menjincontrolerservice
                 if (menjincontrolerservice == null)
                 {
@@ -106,15 +100,12 @@ namespace CardSolutionHost
                 if (menjincontrolerservice.State != CommunicationState.Opened)
                     menjincontrolerservice.Open();
                 #endregion
-
                 loaded = true;
             }
             catch (Exception ex)
             {
+                loaderror = true;
                 Logger.Writer.Write(ex);
-                //MessageBox.Show("程序发生了不可预知的错误需要退出");
-                //Environment.Exit(-1);
-                Application.Restart();
             }
         }
         #region 菜单事件
@@ -237,6 +228,8 @@ namespace CardSolutionHost
 
         private void toolStripACTimeZones_Click(object sender, EventArgs e)
         {
+            var udpmsgservice = ServiceLoader.LoadService<IUdpMsgService>();
+            udpmsgservice.Stop();
             //MenJin.ACTimeZonesManage frm = new CardSolutionHost.MenJin.ACTimeZonesManage();
             //frm.ShowDialog();
         }

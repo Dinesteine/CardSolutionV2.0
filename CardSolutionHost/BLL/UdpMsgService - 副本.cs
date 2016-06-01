@@ -8,54 +8,80 @@ using System.Data;
 using P2P.WellKnown.S2C;
 using P2P.WellKnown.C2S;
 using CardSolutionHost.Core;
-using CardSolutionHost.Interfaces;
 
 namespace CardSolutionHost.BLL
 {
     ///<summary>
     /// Server 的摘要说明。
     ///</summary>
-    public class UdpMsgService : IUdpMsgService
+    public class UdpMsgService
     {
-        object lockobj = new object();
         private UdpClient server;
+        System.Timers.Timer _timer = new System.Timers.Timer();
         private UserCollection userList = new UserCollection();
-        private volatile int state = 0;
-        #region IUdpMsgService
-        public void Start()
+        private volatile bool state = false;
+        Thread thread;
+        public UdpMsgService()
         {
-            lock (lockobj)
-            {
-                if (state == 1)
-                    return;
-                server = new UdpClient(SystemConfig.UdpMsgServicePort);
-                var thread = new Thread(Run);
-                thread.IsBackground = true;
-                thread.Start();
-                state = 1;
-            }
+            thread = new Thread(Run);
+            thread.IsBackground = true;
+            thread.Start();
+            _timer.Elapsed += new System.Timers.ElapsedEventHandler(_timer_Elapsed);
+            _timer.Interval = 1000 * 60 * 3;
+            _timer.AutoReset = false;
+            _timer.Start();
+        }
+        void _timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            this.SendToEveryBody();
+            ResetInterval();
         }
 
-        public void Stop()
-        {
-            lock (lockobj)
-            {
-                if (state != 1)
-                    return;
-            }
-            server.Close();
-            server = null;
-            state = 0;
-        }
-        public void SendToEveryBody()
+        private void ResetInterval()
         {
             try
             {
-                lock (lockobj)
+                object obj = new MessageService().GetLastSendTime();
+                if (obj == null)
                 {
-                    if (state != 1)
-                        return;
+                    _timer.Interval = 1000 * 60 * 15;
+                    return;
                 }
+                DateTime dt;
+                bool flag = DateTime.TryParse(obj.ToString(), out dt);
+                if (flag)
+                {
+                    double nextTimeSpan = (dt - DateTime.Now).TotalMilliseconds;
+                    if (nextTimeSpan > 1000 * 60 * 15)
+                    {
+                        _timer.Interval = 1000 * 60 * 15;
+                        return;
+                    }
+                    else if (nextTimeSpan < 0)
+                    {
+                        _timer.Interval = 1000 * 60 * 15;
+                        return;
+                    }
+                    else
+                    {
+                        _timer.Interval = nextTimeSpan;
+                        return;
+                    }
+                }
+                else
+                {
+                    _timer.Interval = 1000 * 60 * 15;
+                    return;
+                }
+            }
+            catch
+            {
+            }
+        }
+        private void SendToEveryBody()
+        {
+            try
+            {
                 byte[] serverBuffer = ToQueryMsg();
                 foreach (User user in userList)
                 {
@@ -66,25 +92,62 @@ namespace CardSolutionHost.BLL
             {
             }
         }
-        #endregion
-        private void Run()
+
+        private byte[] ToQueryMsg()
+        {
+            byte[] serverBuffer = null;
+            try
+            {
+
+                DataTable dt = new MessageService().GetMessageToSend().Tables[0]; ;
+                NewsCollection newsList = new NewsCollection();
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    newsList.Add(new NewsMessage(dt.Rows[i]["Id"].ToString(), dt.Rows[i]["Theme"].ToString()));
+                }
+                P2P.WellKnown.S2C.GetMsgsResponseMessage msgListReponse = new P2P.WellKnown.S2C.GetMsgsResponseMessage(newsList);
+                serverBuffer = FormatterHelper.Serialize(msgListReponse);
+            }
+            catch
+            {
+            }
+            return serverBuffer;
+        }
+        public void Start()
         {
             try
             {
-                while (state == 1)
-                {
-                    IPEndPoint remoteIP = new IPEndPoint(IPAddress.Any, 0);
-                    byte[] msgBuffer = server.Receive(ref remoteIP);
-                    Thread thread = new Thread(new ParameterizedThreadStart(Work));
-                    thread.IsBackground = true;
-                    thread.Start(new object[] { remoteIP, msgBuffer });
-                }
+
+                server = new UdpClient(SystemConfig.UdpMsgServicePort);
+                state = true;
             }
-            catch (Exception)
+            catch
+            {
+
+            }
+        }
+        public void Stop()
+        {
+            try
+            {
+                state = false;
+                server.Close();
+            }
+            catch
             {
             }
         }
-
+        private void Run()
+        {
+            while (state)
+            {
+                IPEndPoint remoteIP = new IPEndPoint(IPAddress.Any, 0);
+                byte[] msgBuffer = server.Receive(ref remoteIP);
+                Thread thread = new Thread(new ParameterizedThreadStart(Work));
+                thread.IsBackground = true;
+                thread.Start(new object[] { remoteIP, msgBuffer });
+            }
+        }
         private void Work(object obj)
         {
             try
@@ -148,11 +211,12 @@ namespace CardSolutionHost.BLL
                 }
                 else if (msgObj is MassMsg)
                 {
-                    SendToEveryBody();
+                    ResetInterval();
+                    this.SendToEveryBody();
                 }
                 else if (msgObj is TranslateMessage)
                 {
-                    TranslateMessage transMsg = (P2P.WellKnown.C2S.TranslateMessage)msgObj;
+                    P2P.WellKnown.C2S.TranslateMessage transMsg = (P2P.WellKnown.C2S.TranslateMessage)msgObj;
                     User toUser = userList.Find(transMsg.ToUserName);
                     // 转发Purch Hole请求消息
                     if (toUser == null)
@@ -170,26 +234,7 @@ namespace CardSolutionHost.BLL
             catch (Exception)
             {
             }
-        }
-        private byte[] ToQueryMsg()
-        {
-            byte[] serverBuffer = null;
-            try
-            {
 
-                DataTable dt = new MessageService().GetMessageToSend().Tables[0]; ;
-                NewsCollection newsList = new NewsCollection();
-                for (int i = 0; i < dt.Rows.Count; i++)
-                {
-                    newsList.Add(new NewsMessage(dt.Rows[i]["Id"].ToString(), dt.Rows[i]["Theme"].ToString()));
-                }
-                P2P.WellKnown.S2C.GetMsgsResponseMessage msgListReponse = new P2P.WellKnown.S2C.GetMsgsResponseMessage(newsList);
-                serverBuffer = FormatterHelper.Serialize(msgListReponse);
-            }
-            catch
-            {
-            }
-            return serverBuffer;
         }
     }
 }

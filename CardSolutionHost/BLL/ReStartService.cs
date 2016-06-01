@@ -44,7 +44,11 @@ namespace CardSolutionHost.BLL
             catch (Exception)
             {
             }
-            statecode = 1;
+            lock (lockobj)
+            {
+                if (statecode != 0) return;
+                statecode = 1;
+            }
             while (statecode == 1)
             {
                 if (statecode == -1)

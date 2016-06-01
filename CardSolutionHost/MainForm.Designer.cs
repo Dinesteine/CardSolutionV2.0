@@ -312,7 +312,7 @@
             this.toolStripStatusSet.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripStatusSet.Name = "toolStripStatusSet";
             this.toolStripStatusSet.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.toolStripStatusSet.Size = new System.Drawing.Size(118, 37);
+            this.toolStripStatusSet.Size = new System.Drawing.Size(118, 40);
             this.toolStripStatusSet.Text = "门禁刷新重启设置";
             this.toolStripStatusSet.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.toolStripStatusSet.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
@@ -326,7 +326,7 @@
             this.toolStripExit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripExit.Name = "toolStripExit";
             this.toolStripExit.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.toolStripExit.Size = new System.Drawing.Size(46, 37);
+            this.toolStripExit.Size = new System.Drawing.Size(46, 40);
             this.toolStripExit.Text = "退出";
             this.toolStripExit.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.toolStripExit.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
@@ -395,7 +395,7 @@
             // 
             this.notifyIcon.ContextMenuStrip = this.contextMenuStrip1;
             this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
-            this.notifyIcon.Text = "notifyIcon1";
+            this.notifyIcon.Text = "苏州康力门禁服务";
             this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.NotifyIcon1_MouseDoubleClick);
             // 
             // contextMenuStrip1
