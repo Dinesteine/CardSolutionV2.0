@@ -31,11 +31,11 @@ namespace CardSolutionHost
         {
             while (!isCancel)
             {
-                Thread.Sleep(1000);
                 int tempsec = Interlocked.Decrement(ref sec);
                 SetText(tempsec);
                 if (tempsec == 0)
                     Application.Restart();
+                Thread.Sleep(1000);
             }
         }
         void SetText(int tempsec)
