@@ -47,7 +47,8 @@ namespace CardSolutionHost
             {
                 try
                 {
-                    Thread.Sleep(SystemConfig.MenJinRefreshMinutes * 60 * 1000);
+                    //Thread.Sleep(SystemConfig.MenJinRefreshMinutes * 60 * 1000);
+                    Thread.Sleep(20 * 1000);
                     RunRefreshMachine();
                     while (_OPCode != 0)
                     {

@@ -112,16 +112,16 @@ namespace CardSolutionHost
                 Logger.Writer.Write(ex);
             }
         }
-        volatile bool OnCardNum = false;
+        //volatile bool OnCardNum = false;
         private void Apiform_OnHIDNum(int CardNumber)
         {
             try
             {
-                lock (this)
-                {
-                    if (OnCardNum) return;
-                    OnCardNum = true;
-                }
+                //lock (this)
+                //{
+                //    if (OnCardNum) return;
+                //    OnCardNum = true;
+                //}
                 string strCardNo = CardNumber.ToString();
                 if (CardNumber < 0)
                 {
@@ -143,10 +143,10 @@ namespace CardSolutionHost
             {
                 Logger.Writer.Write(ex);
             }
-            finally
-            {
-                OnCardNum = false;
-            }
+            //finally
+            //{
+            //    OnCardNum = false;
+            //}
         }
 
         public void Stop()

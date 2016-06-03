@@ -8,18 +8,17 @@ using System.Windows.Forms;
 
 namespace CardSolutionHost
 {
-    static class Program
+    public static class Program
     {
-        static System.Threading.Mutex RunMutex;
+        public static Mutex RunMutex;
         /// <summary>
         /// 应用程序的主入口点。
         /// </summary>
         [STAThread]
         static void Main()
         {
-            Thread.Sleep(100);
             bool isNotRun = false;
-            RunMutex = new System.Threading.Mutex(true, "CardSolutionHost", out isNotRun);
+            RunMutex = new Mutex(true, "CardSolutionHost", out isNotRun);
             if (!isNotRun) return;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -29,9 +28,11 @@ namespace CardSolutionHost
             Application.ThreadException += Application_ThreadException;
             //处理非UI线程异常   
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-            var mainForm =  ServiceLoader.LoadService<IMenJinHost>() as MainForm;
+            var mainForm = ServiceLoader.LoadService<IMenJinHost>() as MainForm;
+            mainForm.RunMutex = RunMutex;
             Application.Run(mainForm);
         }
+
 
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {

@@ -5,6 +5,7 @@ using Microsoft.Practices.EnterpriseLibrary.Logging;
 using System;
 using System.Net;
 using System.ServiceModel;
+using System.Threading;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 
@@ -26,7 +27,6 @@ namespace CardSolutionHost
                 new Form_LoadError().ShowDialog(this);
             }
         }
-
         bool loaded = false;
         bool loaderror = false;
         ServiceHost hostZKService = null;
@@ -36,14 +36,6 @@ namespace CardSolutionHost
             try
             {
                 if (loaded) return;
-                #region UdpMsgService
-                var udpmsgservice = ServiceLoader.LoadService<IUdpMsgService>();
-                udpmsgservice.Start();
-                #endregion;
-                #region UdpMsgTimerService
-                var iudpmsgtimerservice = ServiceLoader.LoadService<IUdpMsgTimerService>();
-                iudpmsgtimerservice.Start();
-                #endregion;
                 #region 启动门禁监控
                 NavigationWorkForm navigationForm = null;
                 foreach (DockContent frm in this.dockPanel.Contents)
@@ -68,6 +60,7 @@ namespace CardSolutionHost
                     hostZKService = new ServiceHost(typeof(CardSystem_Service.ZKManage.ZKService));
                     System.ServiceModel.Channels.Binding binding = new NetTcpBinding(SecurityMode.None);
                     string strUrl = string.Format("net.tcp://{0}:{1}/ZK/ZKService", IPAddress.Any, SystemConfig.WcfServicePort);
+                    //string strUrl = string.Format("net.tcp://{0}:{1}/ZK/ZKService", "192.168.0.170", SystemConfig.WcfServicePort);
                     hostZKService.AddServiceEndpoint(typeof(CardSystem_Service.ZKManage.IZKService), binding, strUrl);
                     if (hostZKService.Description.Behaviors.Find<System.ServiceModel.Description.ServiceMetadataBehavior>() == null)
                     {
@@ -100,6 +93,14 @@ namespace CardSolutionHost
                 if (menjincontrolerservice.State != CommunicationState.Opened)
                     menjincontrolerservice.Open();
                 #endregion
+                #region UdpMsgService
+                var udpmsgservice = ServiceLoader.LoadService<IUdpMsgService>();
+                udpmsgservice.Start();
+                #endregion;
+                #region UdpMsgTimerService
+                var iudpmsgtimerservice = ServiceLoader.LoadService<IUdpMsgTimerService>();
+                iudpmsgtimerservice.Start();
+                #endregion;
                 loaded = true;
             }
             catch (Exception ex)
@@ -274,6 +275,7 @@ namespace CardSolutionHost
                 return;
             Application.Exit();
         }
+        public Mutex RunMutex;
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             //if (MessageBox.Show("是否确认退出？", "", MessageBoxButtons.YesNo) == DialogResult.No)
@@ -288,6 +290,18 @@ namespace CardSolutionHost
                 this.Hide();
                 return;
             }
+            try
+            {
+                ServiceLoader.LoadService<IUdpMsgService>().Stop();
+                hostZKService.Close();
+                menjincontrolerservice.Close();
+            }
+            catch (Exception)
+            {
+
+            }
+            if (RunMutex != null)
+                RunMutex.Close();
         }
 
         private void NotifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
