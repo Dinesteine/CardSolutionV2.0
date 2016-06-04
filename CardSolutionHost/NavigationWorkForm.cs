@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using Microsoft.Practices.Unity;
 using CardSolutionHost.Entitys;
 using System.Text.RegularExpressions;
- 
+
 namespace CardSolutionHost
 {
     public partial class NavigationWorkForm : WeifenLuo.WinFormsUI.Docking.DockContent, IMenJinControler
