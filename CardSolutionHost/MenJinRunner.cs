@@ -112,22 +112,18 @@ namespace CardSolutionHost
                 Logger.Writer.Write(ex);
             }
         }
-        //volatile bool OnCardNum = false;
         private void Apiform_OnHIDNum(int CardNumber)
         {
             try
             {
-                //lock (this)
-                //{
-                //    if (OnCardNum) return;
-                //    OnCardNum = true;
-                //}
+                //Logger.Writer.Write(CardNumber.ToString());
                 string strCardNo = CardNumber.ToString();
                 if (CardNumber < 0)
                 {
                     string str = CardNumber.ToString("x8").PadLeft(8);
                     strCardNo = long.Parse(str, System.Globalization.NumberStyles.HexNumber).ToString();
                 }
+                if (strCardNo.Length < 3) return;
                 short errorFlag = new MenJinService().GetOpenResult(strCardNo, this.IP);
                 if (errorFlag == 1)
                 {
@@ -143,10 +139,6 @@ namespace CardSolutionHost
             {
                 Logger.Writer.Write(ex);
             }
-            //finally
-            //{
-            //    OnCardNum = false;
-            //}
         }
 
         public void Stop()
