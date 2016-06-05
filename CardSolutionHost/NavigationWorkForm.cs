@@ -43,12 +43,12 @@ namespace CardSolutionHost
 
         public void RunRefreshMachinePerMinutes()
         {
+            Thread.Sleep(5000);
             while (true)
             {
                 try
                 {
                     Thread.Sleep(SystemConfig.MenJinRefreshMinutes * 60 * 1000);
-                    //Thread.Sleep(20 * 1000);
                     RunRefreshMachine();
                     while (_OPCode != 0)
                     {
@@ -147,6 +147,7 @@ namespace CardSolutionHost
                     {
                         this._OPCode = 0;
                         Logger.Writer.Write(ex);
+                        new Form_LoadError().ShowDialog(this);
                     }
                 }
                 lock (lockobj)
