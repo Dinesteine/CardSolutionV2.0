@@ -114,31 +114,36 @@ namespace CardSolutionHost
         }
         private void Apiform_OnHIDNum(int CardNumber)
         {
-            try
+            Thread thread = new Thread(() =>
             {
-                //Logger.Writer.Write(CardNumber.ToString());
-                string strCardNo = CardNumber.ToString();
-                if (CardNumber < 0)
+                try
                 {
-                    string str = CardNumber.ToString("x8").PadLeft(8);
-                    strCardNo = long.Parse(str, System.Globalization.NumberStyles.HexNumber).ToString();
+                    //Logger.Writer.Write(CardNumber.ToString());
+                    string strCardNo = CardNumber.ToString();
+                    if (CardNumber < 0)
+                    {
+                        string str = CardNumber.ToString("x8").PadLeft(8);
+                        strCardNo = long.Parse(str, System.Globalization.NumberStyles.HexNumber).ToString();
+                    }
+                    if (strCardNo.Length < 3) return;
+                    short errorFlag = new MenJinService().GetOpenResult(strCardNo, this.IP);
+                    if (errorFlag == 1)
+                    {
+                        apiform.PlayVoiceByIndex(10);
+                    }
+                    else if (errorFlag == 2)
+                    {
+                        apiform.PlayVoiceByIndex(10);
+                        apiform.ACUnlock(MachineNumber, 200);
+                    }
                 }
-                if (strCardNo.Length < 3) return;
-                short errorFlag = new MenJinService().GetOpenResult(strCardNo, this.IP);
-                if (errorFlag == 1)
+                catch (Exception ex)
                 {
-                    apiform.PlayVoiceByIndex(10);
+                    Logger.Writer.Write(ex);
                 }
-                else if (errorFlag == 2)
-                {
-                    apiform.PlayVoiceByIndex(10);
-                    apiform.ACUnlock(MachineNumber, 200);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Writer.Write(ex);
-            }
+            });
+            thread.IsBackground = true;
+            thread.Start();
         }
 
         public void Stop()
