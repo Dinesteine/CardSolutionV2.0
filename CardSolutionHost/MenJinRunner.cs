@@ -78,13 +78,22 @@ namespace CardSolutionHost
                 ManualResetEvent manualresetevent = new ManualResetEvent(false);
                 Thread thread = new Thread(new ThreadStart(() =>
                 {
-                    apiform = new APIForm(manualresetevent);
-                    apiform.OnHIDNum += Apiform_OnHIDNum;
-                    if (apiform.Connect_Net(IP, Port))
+                    try
                     {
-                        if (apiform.RegEvent(1, 65535))
+                        apiform = new APIForm(manualresetevent);
+                        apiform.OnHIDNum += Apiform_OnHIDNum;
+                        if (apiform.Connect_Net(IP, Port))
                         {
-                            RunnerState = RunnerState.Success;
+                            if (apiform.RegEvent(1, 65535))
+                            {
+                                RunnerState = RunnerState.Success;
+                            }
+                            else
+                            {
+                                RunnerState = RunnerState.Failed;
+                                manualresetevent.Set();
+                                return;
+                            }
                         }
                         else
                         {
@@ -92,14 +101,14 @@ namespace CardSolutionHost
                             manualresetevent.Set();
                             return;
                         }
+                        Application.Run(apiform);
                     }
-                    else
+                    catch (Exception ex)
                     {
                         RunnerState = RunnerState.Failed;
                         manualresetevent.Set();
-                        return;
+                        Logger.Writer.Write(ex);
                     }
-                    Application.Run(apiform);
                 }));
                 thread.IsBackground = true;
                 thread.Start();
@@ -148,6 +157,9 @@ namespace CardSolutionHost
 
         public void Stop()
         {
+            this.IP = null;
+            this.Port = 0;
+            this.MachineNumber = 0;
             SetVisible(false);
             SetImage(RunnerState.Init);
             SetText(string.Empty);

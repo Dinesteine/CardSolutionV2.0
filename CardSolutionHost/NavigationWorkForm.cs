@@ -24,18 +24,26 @@ namespace CardSolutionHost
         string ctlName = "appContainer";
         private volatile int _OPCode;
 
+
+        bool loaded = false;
         public NavigationWorkForm()
         {
             InitializeComponent();
             Runners = new List<IMenJinRunner>();
+            this.Shown += NavigationWorkForm_Shown;
+        }
+        private void NavigationWorkForm_Load(object sender, EventArgs e)
+        {
+
         }
 
-        bool loaded = false;
-        private void NavigationWorkForm_Load(object sender, EventArgs e)
+        private void NavigationWorkForm_Shown(object sender, EventArgs e)
         {
             if (loaded) return;
             loaded = true;
-            RunReloadMachine();
+            Thread thread1 = new Thread(RunReloadMachine);
+            thread1.IsBackground = true;
+            thread1.Start();
             Thread thread = new Thread(RunRefreshMachinePerMinutes);
             thread.IsBackground = true;
             thread.Start();
@@ -147,7 +155,6 @@ namespace CardSolutionHost
                     {
                         this._OPCode = 0;
                         Logger.Writer.Write(ex);
-                        new Form_LoadError().ShowDialog(this);
                     }
                 }
                 lock (lockobj)
@@ -161,6 +168,10 @@ namespace CardSolutionHost
                 if (_OPCode <= 0)
                 {
                     CanRun(true);
+                    this.Invoke(new Action(() =>
+                    {
+                        new Form_LoadError().ShowDialog(this);
+                    }));
                     return;
                 }
                 for (int i = 0; i < 35; i++)
