@@ -113,7 +113,7 @@ namespace CardSolutionHost
                 thread.IsBackground = true;
                 thread.Start();
                 manualresetevent.WaitOne();
-                Thread.Sleep(500);
+                Thread.Sleep(1000);
             }
             catch (Exception ex)
             {
