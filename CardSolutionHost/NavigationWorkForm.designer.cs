@@ -72,7 +72,6 @@ namespace CardSolutionHost
             this.appContainer30.BackColor = System.Drawing.Color.Transparent;
             this.appContainer30.Location = new System.Drawing.Point(541, 370);
             this.appContainer30.Name = "appContainer30";
-            this.appContainer30.Runner = null;
             this.appContainer30.Size = new System.Drawing.Size(126, 65);
             this.appContainer30.TabIndex = 11;
             // 
@@ -81,7 +80,6 @@ namespace CardSolutionHost
             this.appContainer24.BackColor = System.Drawing.Color.Transparent;
             this.appContainer24.Location = new System.Drawing.Point(409, 299);
             this.appContainer24.Name = "appContainer24";
-            this.appContainer24.Runner = null;
             this.appContainer24.Size = new System.Drawing.Size(126, 65);
             this.appContainer24.TabIndex = 11;
             // 
@@ -90,7 +88,6 @@ namespace CardSolutionHost
             this.appContainer18.BackColor = System.Drawing.Color.Transparent;
             this.appContainer18.Location = new System.Drawing.Point(277, 228);
             this.appContainer18.Name = "appContainer18";
-            this.appContainer18.Runner = null;
             this.appContainer18.Size = new System.Drawing.Size(126, 65);
             this.appContainer18.TabIndex = 11;
             // 
@@ -99,7 +96,6 @@ namespace CardSolutionHost
             this.appContainer12.BackColor = System.Drawing.Color.Transparent;
             this.appContainer12.Location = new System.Drawing.Point(145, 157);
             this.appContainer12.Name = "appContainer12";
-            this.appContainer12.Runner = null;
             this.appContainer12.Size = new System.Drawing.Size(126, 65);
             this.appContainer12.TabIndex = 11;
             // 
@@ -108,7 +104,6 @@ namespace CardSolutionHost
             this.appContainer35.BackColor = System.Drawing.Color.Transparent;
             this.appContainer35.Location = new System.Drawing.Point(541, 441);
             this.appContainer35.Name = "appContainer35";
-            this.appContainer35.Runner = null;
             this.appContainer35.Size = new System.Drawing.Size(126, 65);
             this.appContainer35.TabIndex = 10;
             // 
@@ -117,7 +112,6 @@ namespace CardSolutionHost
             this.appContainer29.BackColor = System.Drawing.Color.Transparent;
             this.appContainer29.Location = new System.Drawing.Point(409, 370);
             this.appContainer29.Name = "appContainer29";
-            this.appContainer29.Runner = null;
             this.appContainer29.Size = new System.Drawing.Size(126, 65);
             this.appContainer29.TabIndex = 10;
             // 
@@ -126,7 +120,6 @@ namespace CardSolutionHost
             this.appContainer23.BackColor = System.Drawing.Color.Transparent;
             this.appContainer23.Location = new System.Drawing.Point(277, 299);
             this.appContainer23.Name = "appContainer23";
-            this.appContainer23.Runner = null;
             this.appContainer23.Size = new System.Drawing.Size(126, 65);
             this.appContainer23.TabIndex = 10;
             // 
@@ -135,7 +128,6 @@ namespace CardSolutionHost
             this.appContainer17.BackColor = System.Drawing.Color.Transparent;
             this.appContainer17.Location = new System.Drawing.Point(145, 228);
             this.appContainer17.Name = "appContainer17";
-            this.appContainer17.Runner = null;
             this.appContainer17.Size = new System.Drawing.Size(126, 65);
             this.appContainer17.TabIndex = 10;
             // 
@@ -144,7 +136,6 @@ namespace CardSolutionHost
             this.appContainer11.BackColor = System.Drawing.Color.Transparent;
             this.appContainer11.Location = new System.Drawing.Point(13, 157);
             this.appContainer11.Name = "appContainer11";
-            this.appContainer11.Runner = null;
             this.appContainer11.Size = new System.Drawing.Size(126, 65);
             this.appContainer11.TabIndex = 10;
             // 
@@ -153,7 +144,6 @@ namespace CardSolutionHost
             this.appContainer34.BackColor = System.Drawing.Color.Transparent;
             this.appContainer34.Location = new System.Drawing.Point(409, 441);
             this.appContainer34.Name = "appContainer34";
-            this.appContainer34.Runner = null;
             this.appContainer34.Size = new System.Drawing.Size(126, 65);
             this.appContainer34.TabIndex = 9;
             // 
@@ -162,7 +152,6 @@ namespace CardSolutionHost
             this.appContainer28.BackColor = System.Drawing.Color.Transparent;
             this.appContainer28.Location = new System.Drawing.Point(277, 370);
             this.appContainer28.Name = "appContainer28";
-            this.appContainer28.Runner = null;
             this.appContainer28.Size = new System.Drawing.Size(126, 65);
             this.appContainer28.TabIndex = 9;
             // 
@@ -171,7 +160,6 @@ namespace CardSolutionHost
             this.appContainer22.BackColor = System.Drawing.Color.Transparent;
             this.appContainer22.Location = new System.Drawing.Point(145, 299);
             this.appContainer22.Name = "appContainer22";
-            this.appContainer22.Runner = null;
             this.appContainer22.Size = new System.Drawing.Size(126, 65);
             this.appContainer22.TabIndex = 9;
             // 
@@ -180,7 +168,6 @@ namespace CardSolutionHost
             this.appContainer16.BackColor = System.Drawing.Color.Transparent;
             this.appContainer16.Location = new System.Drawing.Point(13, 228);
             this.appContainer16.Name = "appContainer16";
-            this.appContainer16.Runner = null;
             this.appContainer16.Size = new System.Drawing.Size(126, 65);
             this.appContainer16.TabIndex = 9;
             // 
@@ -189,7 +176,6 @@ namespace CardSolutionHost
             this.appContainer10.BackColor = System.Drawing.Color.Transparent;
             this.appContainer10.Location = new System.Drawing.Point(541, 86);
             this.appContainer10.Name = "appContainer10";
-            this.appContainer10.Runner = null;
             this.appContainer10.Size = new System.Drawing.Size(126, 65);
             this.appContainer10.TabIndex = 9;
             // 
@@ -198,7 +184,6 @@ namespace CardSolutionHost
             this.appContainer33.BackColor = System.Drawing.Color.Transparent;
             this.appContainer33.Location = new System.Drawing.Point(277, 441);
             this.appContainer33.Name = "appContainer33";
-            this.appContainer33.Runner = null;
             this.appContainer33.Size = new System.Drawing.Size(126, 65);
             this.appContainer33.TabIndex = 8;
             // 
@@ -207,7 +192,6 @@ namespace CardSolutionHost
             this.appContainer27.BackColor = System.Drawing.Color.Transparent;
             this.appContainer27.Location = new System.Drawing.Point(145, 370);
             this.appContainer27.Name = "appContainer27";
-            this.appContainer27.Runner = null;
             this.appContainer27.Size = new System.Drawing.Size(126, 65);
             this.appContainer27.TabIndex = 8;
             // 
@@ -216,7 +200,6 @@ namespace CardSolutionHost
             this.appContainer21.BackColor = System.Drawing.Color.Transparent;
             this.appContainer21.Location = new System.Drawing.Point(13, 299);
             this.appContainer21.Name = "appContainer21";
-            this.appContainer21.Runner = null;
             this.appContainer21.Size = new System.Drawing.Size(126, 65);
             this.appContainer21.TabIndex = 8;
             // 
@@ -225,7 +208,6 @@ namespace CardSolutionHost
             this.appContainer15.BackColor = System.Drawing.Color.Transparent;
             this.appContainer15.Location = new System.Drawing.Point(541, 157);
             this.appContainer15.Name = "appContainer15";
-            this.appContainer15.Runner = null;
             this.appContainer15.Size = new System.Drawing.Size(126, 65);
             this.appContainer15.TabIndex = 8;
             // 
@@ -234,7 +216,6 @@ namespace CardSolutionHost
             this.appContainer9.BackColor = System.Drawing.Color.Transparent;
             this.appContainer9.Location = new System.Drawing.Point(409, 86);
             this.appContainer9.Name = "appContainer9";
-            this.appContainer9.Runner = null;
             this.appContainer9.Size = new System.Drawing.Size(126, 65);
             this.appContainer9.TabIndex = 8;
             // 
@@ -243,7 +224,6 @@ namespace CardSolutionHost
             this.appContainer32.BackColor = System.Drawing.Color.Transparent;
             this.appContainer32.Location = new System.Drawing.Point(145, 441);
             this.appContainer32.Name = "appContainer32";
-            this.appContainer32.Runner = null;
             this.appContainer32.Size = new System.Drawing.Size(126, 65);
             this.appContainer32.TabIndex = 7;
             // 
@@ -252,7 +232,6 @@ namespace CardSolutionHost
             this.appContainer31.BackColor = System.Drawing.Color.Transparent;
             this.appContainer31.Location = new System.Drawing.Point(13, 441);
             this.appContainer31.Name = "appContainer31";
-            this.appContainer31.Runner = null;
             this.appContainer31.Size = new System.Drawing.Size(126, 65);
             this.appContainer31.TabIndex = 6;
             // 
@@ -261,7 +240,6 @@ namespace CardSolutionHost
             this.appContainer26.BackColor = System.Drawing.Color.Transparent;
             this.appContainer26.Location = new System.Drawing.Point(13, 370);
             this.appContainer26.Name = "appContainer26";
-            this.appContainer26.Runner = null;
             this.appContainer26.Size = new System.Drawing.Size(126, 65);
             this.appContainer26.TabIndex = 7;
             // 
@@ -270,7 +248,6 @@ namespace CardSolutionHost
             this.appContainer25.BackColor = System.Drawing.Color.Transparent;
             this.appContainer25.Location = new System.Drawing.Point(541, 299);
             this.appContainer25.Name = "appContainer25";
-            this.appContainer25.Runner = null;
             this.appContainer25.Size = new System.Drawing.Size(126, 65);
             this.appContainer25.TabIndex = 6;
             // 
@@ -279,7 +256,6 @@ namespace CardSolutionHost
             this.appContainer20.BackColor = System.Drawing.Color.Transparent;
             this.appContainer20.Location = new System.Drawing.Point(541, 228);
             this.appContainer20.Name = "appContainer20";
-            this.appContainer20.Runner = null;
             this.appContainer20.Size = new System.Drawing.Size(126, 65);
             this.appContainer20.TabIndex = 7;
             // 
@@ -288,7 +264,6 @@ namespace CardSolutionHost
             this.appContainer19.BackColor = System.Drawing.Color.Transparent;
             this.appContainer19.Location = new System.Drawing.Point(409, 228);
             this.appContainer19.Name = "appContainer19";
-            this.appContainer19.Runner = null;
             this.appContainer19.Size = new System.Drawing.Size(126, 65);
             this.appContainer19.TabIndex = 6;
             // 
@@ -297,7 +272,6 @@ namespace CardSolutionHost
             this.appContainer14.BackColor = System.Drawing.Color.Transparent;
             this.appContainer14.Location = new System.Drawing.Point(409, 157);
             this.appContainer14.Name = "appContainer14";
-            this.appContainer14.Runner = null;
             this.appContainer14.Size = new System.Drawing.Size(126, 65);
             this.appContainer14.TabIndex = 7;
             // 
@@ -306,7 +280,6 @@ namespace CardSolutionHost
             this.appContainer13.BackColor = System.Drawing.Color.Transparent;
             this.appContainer13.Location = new System.Drawing.Point(277, 157);
             this.appContainer13.Name = "appContainer13";
-            this.appContainer13.Runner = null;
             this.appContainer13.Size = new System.Drawing.Size(126, 65);
             this.appContainer13.TabIndex = 6;
             // 
@@ -315,7 +288,6 @@ namespace CardSolutionHost
             this.appContainer8.BackColor = System.Drawing.Color.Transparent;
             this.appContainer8.Location = new System.Drawing.Point(277, 86);
             this.appContainer8.Name = "appContainer8";
-            this.appContainer8.Runner = null;
             this.appContainer8.Size = new System.Drawing.Size(126, 65);
             this.appContainer8.TabIndex = 7;
             // 
@@ -324,7 +296,6 @@ namespace CardSolutionHost
             this.appContainer7.BackColor = System.Drawing.Color.Transparent;
             this.appContainer7.Location = new System.Drawing.Point(145, 86);
             this.appContainer7.Name = "appContainer7";
-            this.appContainer7.Runner = null;
             this.appContainer7.Size = new System.Drawing.Size(126, 65);
             this.appContainer7.TabIndex = 6;
             // 
@@ -333,7 +304,6 @@ namespace CardSolutionHost
             this.appContainer6.BackColor = System.Drawing.Color.Transparent;
             this.appContainer6.Location = new System.Drawing.Point(13, 86);
             this.appContainer6.Name = "appContainer6";
-            this.appContainer6.Runner = null;
             this.appContainer6.Size = new System.Drawing.Size(126, 65);
             this.appContainer6.TabIndex = 5;
             // 
@@ -342,7 +312,6 @@ namespace CardSolutionHost
             this.appContainer5.BackColor = System.Drawing.Color.Transparent;
             this.appContainer5.Location = new System.Drawing.Point(541, 12);
             this.appContainer5.Name = "appContainer5";
-            this.appContainer5.Runner = null;
             this.appContainer5.Size = new System.Drawing.Size(126, 65);
             this.appContainer5.TabIndex = 4;
             // 
@@ -351,7 +320,6 @@ namespace CardSolutionHost
             this.appContainer4.BackColor = System.Drawing.Color.Transparent;
             this.appContainer4.Location = new System.Drawing.Point(409, 12);
             this.appContainer4.Name = "appContainer4";
-            this.appContainer4.Runner = null;
             this.appContainer4.Size = new System.Drawing.Size(126, 65);
             this.appContainer4.TabIndex = 3;
             // 
@@ -360,7 +328,6 @@ namespace CardSolutionHost
             this.appContainer3.BackColor = System.Drawing.Color.Transparent;
             this.appContainer3.Location = new System.Drawing.Point(277, 12);
             this.appContainer3.Name = "appContainer3";
-            this.appContainer3.Runner = null;
             this.appContainer3.Size = new System.Drawing.Size(126, 65);
             this.appContainer3.TabIndex = 2;
             // 
@@ -369,7 +336,6 @@ namespace CardSolutionHost
             this.appContainer2.BackColor = System.Drawing.Color.Transparent;
             this.appContainer2.Location = new System.Drawing.Point(145, 12);
             this.appContainer2.Name = "appContainer2";
-            this.appContainer2.Runner = null;
             this.appContainer2.Size = new System.Drawing.Size(126, 65);
             this.appContainer2.TabIndex = 1;
             // 
@@ -378,7 +344,6 @@ namespace CardSolutionHost
             this.appContainer1.BackColor = System.Drawing.Color.Transparent;
             this.appContainer1.Location = new System.Drawing.Point(13, 12);
             this.appContainer1.Name = "appContainer1";
-            this.appContainer1.Runner = null;
             this.appContainer1.Size = new System.Drawing.Size(126, 65);
             this.appContainer1.TabIndex = 0;
             // 

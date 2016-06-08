@@ -18,7 +18,7 @@ namespace CardSolutionHost
         static void Main()
         {
             bool isNotRun = false;
-            RunMutex = new Mutex(true, "CardSolutionHostTest", out isNotRun);
+            RunMutex = new Mutex(true, "CardSolutionHosteee", out isNotRun);
             if (!isNotRun) return;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

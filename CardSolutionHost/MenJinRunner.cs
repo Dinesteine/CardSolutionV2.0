@@ -127,7 +127,6 @@ namespace CardSolutionHost
             {
                 try
                 {
-                    //Logger.Writer.Write(CardNumber.ToString());
                     string strCardNo = CardNumber.ToString();
                     if (CardNumber < 0)
                     {

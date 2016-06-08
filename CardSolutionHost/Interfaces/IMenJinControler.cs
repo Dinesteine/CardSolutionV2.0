@@ -9,6 +9,5 @@ namespace CardSolutionHost.Interfaces
     {
         void RunRefreshMachine();
         void RunReloadMachine();
-        List<IMenJinRunner> Runners { get; }
     }
 }

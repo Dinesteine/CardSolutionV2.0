@@ -110,8 +110,6 @@ namespace CardSolutionHost
             }
         }
         #region 菜单事件
-
-
         public void toolStripRefreshServer_Click(object sender, EventArgs e)
         {
             ServiceLoader.LoadService<IMenJinControler>().RunRefreshMachine();

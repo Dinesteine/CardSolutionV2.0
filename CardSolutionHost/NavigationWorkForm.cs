@@ -14,12 +14,12 @@ using System.Collections.Generic;
 using Microsoft.Practices.Unity;
 using CardSolutionHost.Entitys;
 using System.Text.RegularExpressions;
+using CardSolutionHost.Control;
 
 namespace CardSolutionHost
 {
     public partial class NavigationWorkForm : WeifenLuo.WinFormsUI.Docking.DockContent, IMenJinControler
     {
-        public List<IMenJinRunner> Runners { get; private set; }
         object lockobj = new object();
         string ctlName = "appContainer";
         private volatile int _OPCode;
@@ -29,7 +29,6 @@ namespace CardSolutionHost
         public NavigationWorkForm()
         {
             InitializeComponent();
-            Runners = new List<IMenJinRunner>();
             this.Shown += NavigationWorkForm_Shown;
         }
         private void NavigationWorkForm_Load(object sender, EventArgs e)
@@ -81,8 +80,8 @@ namespace CardSolutionHost
                     for (int i = 0; i < 35; i++)
                     {
                         string key = string.Format("{0}{1}", ctlName, (i + 1));
-                        var ctl = this.Controls[key] as Control.AppContainer;
-                        if (ctl.Runner != null)
+                        var ctl = this.Controls[key] as AppContainer;
+                        if (ctl.Machine != null)
                         {
                             Interlocked.Increment(ref this._OPCode);
                         }
@@ -99,11 +98,11 @@ namespace CardSolutionHost
             {
                 string key = string.Format("{0}{1}", ctlName, (i + 1));
                 var ctl = this.Controls[key] as Control.AppContainer;
-                if (ctl.Runner != null)
+                if (ctl.Machine != null)
                 {
                     Thread thread = new Thread(new ParameterizedThreadStart(RefreshMachine));
                     thread.IsBackground = true;
-                    thread.Start(ctl.Runner);
+                    thread.Start(ctl);
                 }
             }
         }
@@ -111,14 +110,12 @@ namespace CardSolutionHost
         {
             try
             {
-                IMenJinRunner runner = (IMenJinRunner)para;
+                AppContainer ctl = (AppContainer)para;
                 for (int i = 0; i < 3; i++)
                 {
                     bool CanPing = false;
-                    runner.Run(ref CanPing);
-                    if (runner.RunnerState == RunnerState.Success)
-                        break;
-                    if (!CanPing)
+                    ctl.RunRefreshMachine(ref CanPing);
+                    if (ctl.RunnerState == RunnerState.Success)
                         break;
                 }
             }
@@ -142,58 +139,47 @@ namespace CardSolutionHost
             try
             {
                 List<MachinesEntity> machines = null;
-                lock (lockobj)
+                if (_OPCode == 0)
                 {
-                    try
+                    lock (lockobj)
                     {
-                        if (_OPCode != 0) return;
-                        CanRun(false);
-                        machines = new MenJinService().GetEnableMachinesEntitys().OrderBy(t => t.MachineNumber).ToList();
-                        this._OPCode = machines.Count;
-                    }
-                    catch (Exception ex)
-                    {
-                        this._OPCode = 0;
-                        Logger.Writer.Write(ex);
+                        try
+                        {
+                            if (_OPCode != 0) return;
+                            CanRun(false);
+                            machines = new MenJinService().GetEnableMachinesEntitys().OrderBy(t => t.MachineNumber).ToList();
+                            this._OPCode = machines.Count;
+                        }
+                        catch (Exception ex)
+                        {
+                            this._OPCode = 0;
+                            throw ex;
+                        }
+                        if (this._OPCode == 0)
+                            return;
                     }
                 }
-                lock (lockobj)
-                {
-                    foreach (var runner in this.Runners)
-                    {
-                        runner.Stop();
-                    }
-                    this.Runners.Clear();
-                }
-                if (_OPCode <= 0)
-                {
-                    CanRun(true);
-                    this.Invoke(new Action(() =>
-                    {
-                        new Form_LoadError().ShowDialog(this);
-                    }));
+                else
                     return;
-                }
                 for (int i = 0; i < 35; i++)
                 {
                     string key = string.Format("{0}{1}", ctlName, (i + 1));
-                    var ctl = this.Controls[key] as Control.AppContainer;
-                    ctl.Runner = null;
+                    var ctl = this.Controls[key] as AppContainer;
+                    ctl.RunStopMachine();
                 }
-
-                Thread threadtemp = new Thread(new ThreadStart(() =>
+                int machinescount = machines.Count;
+                for (int i = 0; i < 35; i++)
                 {
-                    foreach (var machine in machines)
+                    string key = string.Format("{0}{1}", ctlName, (i + 1));
+                    var ctl = this.Controls[key] as AppContainer;
+                    if (i <= (machinescount - 1))
                     {
-                        var autoEvent = new AutoResetEvent(false);
-                        Thread thread = new Thread(new ParameterizedThreadStart(ReloadMachine));
+                        ctl.Machine = machines[i];
+                        Thread thread = new Thread(new ParameterizedThreadStart(StartMachine));
                         thread.IsBackground = true;
-                        thread.Start(new object[] { machine, autoEvent });
-                        autoEvent.WaitOne();
+                        thread.Start(ctl);
                     }
-                }));
-                threadtemp.IsBackground = true;
-                threadtemp.Start();
+                }
             }
             catch (Exception ex)
             {
@@ -201,42 +187,16 @@ namespace CardSolutionHost
                 RunReloadMachine();
             }
         }
-        private void ReloadMachine(object para)
+        private void StartMachine(object para)
         {
             try
             {
-                object[] objs = para as object[];
-                MachinesEntity machine = (MachinesEntity)objs[0];
-                IMenJinRunner runner;
-                try
-                {
-                    lock (lockobj)
-                    {
-                        runner = this.Runners.FirstOrDefault(t => t.IP == machine.IP);
-                        if (runner == null)
-                        {
-                            runner = CreateRunner(machine);
-                            this.Runners.Add(runner);
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
-                finally
-                {
-                    AutoResetEvent autoEvent = (AutoResetEvent)objs[1];
-                    if (autoEvent != null)
-                        autoEvent.Set();
-                }
+                AppContainer ctl = (AppContainer)para;
                 for (int i = 0; i < 3; i++)
                 {
                     bool CanPing = false;
-                    runner.Run(ref CanPing);
-                    if (runner.RunnerState == RunnerState.Success)
-                        break;
-                    if (!CanPing)
+                    ctl.RunStartMachine(ref CanPing);
+                    if (ctl.RunnerState == RunnerState.Success)
                         break;
                 }
             }
@@ -258,28 +218,6 @@ namespace CardSolutionHost
         {
             ServiceLoader.LoadService<IMenJinHost>().CanRefresh = canRun;
             ServiceLoader.LoadService<IMenJinHost>().CanReStart = canRun;
-        }
-        private IMenJinRunner CreateRunner(MachinesEntity machine)
-        {
-            if (!Regex.IsMatch(machine.IP, @"^((2[0-4]\d|25[0-5]|[01]?\d\d?)\.){3}(2[0-4]\d|25[0-5]|[01]?\d\d?)$"))
-                throw new Exception("IP地址格式错误");
-            for (int i = 0; i < 35; i++)
-            {
-                string key = string.Format("{0}{1}", ctlName, (i + 1));
-                var ctl = this.Controls[key] as Control.AppContainer;
-                if (ctl.Runner == null)
-                {
-                    ctl.Runner = ServiceLoader.LoadService<IMenJinRunner>(
-                        new ParameterOverride("Host", ctl),
-                        new ParameterOverride("MachineNumber", machine.MachineNumber),
-                        new ParameterOverride("IP", machine.IP),
-                        new ParameterOverride("Port", machine.Port),
-                        new ParameterOverride("RunnerName", machine.MachineAlias)
-                        );
-                    return ctl.Runner;
-                }
-            }
-            throw new Exception("考勤机数量超出最大限制");
         }
     }
 }
