@@ -55,7 +55,8 @@ namespace CardSolutionHost
             {
                 try
                 {
-                    Thread.Sleep(SystemConfig.MenJinRefreshMinutes * 60 * 1000);
+                    //Thread.Sleep(SystemConfig.MenJinRefreshMinutes * 60 * 1000);
+                    Thread.Sleep(30 * 1000);
                     RunRefreshMachine();
                     while (_OPCode != 0)
                     {
@@ -184,6 +185,7 @@ namespace CardSolutionHost
             catch (Exception ex)
             {
                 Logger.Writer.Write(ex);
+                Thread.Sleep(10000);
                 RunReloadMachine();
             }
         }

@@ -18,8 +18,9 @@ namespace CardSolutionHost
         static void Main()
         {
             bool isNotRun = false;
-            RunMutex = new Mutex(true, "CardSolutionHosteee", out isNotRun);
+            RunMutex = new Mutex(true, "CardSolutionHost", out isNotRun);
             if (!isNotRun) return;
+            Logger.Writer.Write("启动");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //处理未捕获的异常   
