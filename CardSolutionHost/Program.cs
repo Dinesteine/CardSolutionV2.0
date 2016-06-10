@@ -41,7 +41,7 @@ namespace CardSolutionHost
             if (ex != null)
             {
                 Logger.Writer.Write(ex, TraceEventType.Critical);
-                throw ex;
+                Application.Restart();
             }
         }
 
@@ -51,7 +51,7 @@ namespace CardSolutionHost
             if (ex != null)
             {
                 Logger.Writer.Write(ex, TraceEventType.Critical);
-                throw ex;
+                Application.Restart();
             }
         }
     }
