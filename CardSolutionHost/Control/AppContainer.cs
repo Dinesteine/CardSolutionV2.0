@@ -106,6 +106,7 @@ namespace CardSolutionHost.Control
                     catch (Exception ex)
                     {
                         Logger.Writer.Write(ex);
+                        Application.Restart();
                     }
                 });
                 thread.IsBackground = true;

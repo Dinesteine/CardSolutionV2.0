@@ -69,6 +69,7 @@ namespace CardSolutionHost
                         hostZKService.Description.Behaviors.Add(new System.ServiceModel.Description.ServiceMetadataBehavior());
                         hostZKService.AddServiceEndpoint(typeof(System.ServiceModel.Description.IMetadataExchange), bind, strUrl + "/Mex");
                     }
+                    hostZKService.Faulted += Service_Faulted;
                 }
                 if (hostZKService.State != CommunicationState.Opened)
                     hostZKService.Open();
@@ -89,6 +90,7 @@ namespace CardSolutionHost
                         menjincontrolerservice.Description.Behaviors.Add(new System.ServiceModel.Description.ServiceMetadataBehavior());
                         menjincontrolerservice.AddServiceEndpoint(typeof(System.ServiceModel.Description.IMetadataExchange), bind, strUrl + "/Mex");
                     }
+                    menjincontrolerservice.Faulted += Service_Faulted;
                 }
                 if (menjincontrolerservice.State != CommunicationState.Opened)
                     menjincontrolerservice.Open();
@@ -107,8 +109,15 @@ namespace CardSolutionHost
             {
                 loaderror = true;
                 Logger.Writer.Write(ex);
+                Application.Restart();
             }
         }
+
+        private void Service_Faulted(object sender, EventArgs e)
+        {
+            Application.Restart();
+        }
+
         #region 菜单事件
         public void toolStripRefreshServer_Click(object sender, EventArgs e)
         {
